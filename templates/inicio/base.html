@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title }}</title>
+
+    <!-- favicon-->
+    <link rel="shortcut icon" href="{% static 'img/logonew.png' %}">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-5.3.8-dist/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap 5 JS y dependencias -->
+    <script src="{% static 'lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- jQuery (necesario para algunos componentes de Bootstrap) -->
+    <script src="{% static 'lib/js/jquery-4.0.0.min.js' %}"></script> <!-- Aquí se incluye jQuery localmente -->
+
+    <!-- fontawesome library -->
+    <script src="https://kit.fontawesome.com/8c8b2bc594.js" crossorigin="anonymous"></script>
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="{% static 'lib/DataTables/datatables.min.css' %}">
+    <script src="{% static 'lib/DataTables/datatables.min.js' %}"></script>
+
+</head>
+
+<body>
+
+    {% include 'inicio/navbar.html' %}
+    <br>
+    <br>
+    
+    {% block sinNada %}
+    {% endblock %}
+
+    <div class="container">
+        <br>
+        
+        {% block breadcrumb %}
+        {% endblock %}
+        
+        {% block content %}
+        {% endblock %}
+
+    </div> 
+    
+    {% block javascript %}
+    <!-- Codigo para los mensajes con la libreria sweetalert-->
+     <script src="{% static 'lib/sweetalert2-11.26.23/package/dist/sweetalert2.all.min.js' %}"></script>
+     <script src="{% static 'js/notificacionSwal.js' %}"></script>
+     
+    
+    {% endblock %}
+    
+</body>
+</html>
