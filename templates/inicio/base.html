@@ -21,6 +21,9 @@
 
     <!-- fontawesome library -->
     <script src="https://kit.fontawesome.com/8c8b2bc594.js" crossorigin="anonymous"></script>
+    
+    <!-- Importa el CSS de FontAwesome y Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <!-- Datatables -->
     <link rel="stylesheet" href="{% static 'lib/DataTables/datatables.min.css' %}">
@@ -29,8 +32,8 @@
 </head>
 
 <body>
-
-    {% include 'inicio/navbar.html' %}
+    
+    {% include 'inicio/navbarHorizontal2.html' %}
     <br>
     <br>
     
@@ -40,21 +43,17 @@
     <div class="container">
         <br>
         
-        {% block breadcrumb %}
-        {% endblock %}
-        
         {% block content %}
         {% endblock %}
 
-    </div> 
+    </div>
     
-    {% block javascript %}
+    <!-- Codigo para el año actual-->
+    <script src="{% static 'js/anio.js' %}"></script>
+
     <!-- Codigo para los mensajes con la libreria sweetalert-->
      <script src="{% static 'lib/sweetalert2-11.26.23/package/dist/sweetalert2.all.min.js' %}"></script>
      <script src="{% static 'js/notificacionSwal.js' %}"></script>
      
-    
-    {% endblock %}
-    
 </body>
 </html>

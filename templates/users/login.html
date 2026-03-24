@@ -1,17 +1,49 @@
-<form method="POST">
-    {% csrf_token %}
+{% extends 'inicio/base.html' %}
+{% load static %}
 
-    <div class="mb-3">
-        {{ form.username.label_tag }}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+
+<div class="login-container container mt-3">
+    
+    <form class="form-signin" action="" method="post">
+    {% csrf_token %}  <!--para que no genere error-->
+    
+    <div class="avatar">
+        <img src="{% static 'img/logonew.png' %}" alt="">
+    </div>
+
+    <h1 class="h3 mb-3 font-weight-normal">Aplicativo eventos Cootep</h1>
+
+    <!-- Campo Usuario -->
+    <div class="input-group">
+        <i class="fas fa-user"></i> <!-- Ícono de usuario -->
         {{ form.username }}
     </div>
 
-    <div class="mb-3">
-        {{ form.password.label_tag }}
+    <!-- Campo Password -->
+    <div class="input-group">
+        <i class="fas fa-lock"></i> <!-- Ícono de candado -->
         {{ form.password }}
     </div>
 
-    <button type="submit" class="btn btn-primary w-100">
-        Iniciar sesión
-    </button>
-</form>
+    <button type="submit" class="btn btn-lg btn-success login-button" >INICIAR SESION</button>
+    <!-- Enlace para recuperar contraseña -->
+     <a href="" class="forgot-password">Recordar contraseña</a>
+
+    </form>
+
+   <!-- Footer -->
+    <footer>
+        <p class="CopyRight text-muted mt-3" style="font-size: 12px;">All Copyright <span id="anio_actual"></span> &copy; COOTEP <br> Diseñado por Ing de sistemas Maicol Yela Valencia</p>
+    </footer>
+
+</div>
+
+<div class="mensajes">
+  {% include 'inicio/messages.html' %}
+</div>
+
+{% endblock %}

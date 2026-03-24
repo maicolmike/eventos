@@ -1,0 +1,90 @@
+{% load static %}
+
+{% if user.is_authenticated %}
+<link rel="stylesheet" href="{% static 'css/navbarHorizontal2.css' %}">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a class="navbar-brand fw-bold" href="{% url 'index' %}">
+      <img src="{% static 'img/logonew.png' %}" width="100" class="me-2">
+      Eventos
+    </a>
+
+    <!-- BOTÓN MOBILE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMain">
+
+      <!-- MENÚ -->
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">📅 Crear evento</a>
+        </li>
+
+        {% if user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">👤 Usuarios</a>
+        </li>
+        {% endif %}
+      </ul>
+
+      <!-- DERECHA -->
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <!-- 👤 PERFIL -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+            
+            <!-- FOTO -->
+            <img src="{% static 'img/logonew.png' %}" class="rounded-circle me-2" width="35" height="35">
+            
+            {{ user.username }}
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+
+            <li class="text-center p-2">
+              <strong>{{ user.username }}</strong><br>
+              {% if user.is_superuser %}
+                <span class="badge bg-danger">Administrador</span>
+              {% else %}
+                <span class="badge bg-primary">Cliente</span>
+              {% endif %}
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item" href="#">
+                ⚙️ Mi perfil
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" href="#">
+                🔑 Cambiar contraseña
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                🚪 Cerrar sesión
+              </a>
+            </li>
+
+          </ul>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+{% endif %}

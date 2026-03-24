@@ -1,0 +1,15 @@
+.navbar {
+    height: 70px;
+}
+
+.nav-link {
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: #00ffc3 !important;
+}
+
+.dropdown-menu {
+    border-radius: 10px;
+}
