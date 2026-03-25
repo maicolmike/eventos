@@ -9,7 +9,6 @@
     <!-- LOGO -->
     <a class="navbar-brand fw-bold" href="{% url 'index' %}">
       <img src="{% static 'img/logonew.png' %}" width="100" class="me-2">
-      Eventos
     </a>
 
     <!-- BOTÓN MOBILE -->
@@ -40,7 +39,11 @@
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
             
             <!-- FOTO -->
-            <img src="{% static 'img/logonew.png' %}" class="rounded-circle me-2" width="35" height="35">
+            {% if user.is_superuser %}
+            <img src="{% static 'img/administrador.png' %}" class="rounded-circle me-2" width="35" height="35">
+            {% else %}
+            <img src="{% static 'img/cliente.png' %}" class="rounded-circle me-2" width="35" height="35">
+            {% endif %}
             
             {{ user.username }}
           </a>
