@@ -3,41 +3,62 @@
 
 {% block content %}
 
-{% if user.is_superuser == 1 %} <!-- valido que el usuario que ingresa a esta ruta sea un administrador tipo= 1-->
+{% if user.is_superuser %}
 
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 
 <div class="container mt-5">
-  {% include 'inicio/messages.html' %}
-  <h2>Crear usuario</h2>
-  <!-- Formulario -->
-  <form class="form-create" method="post">
-      {% csrf_token %}
-    
-    <!-- Mostar el formulario de una manera mas rapida-->
-    {% for field in form %}
-    <div class="form-group">
 
-      {{ field.label_tag }}
-      {{ field }}
-    
-      {% if field.errors %}
-      {{ field.errors }}
-      {% endif %}
+  {% include 'inicio/messages.html' %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">👤 Crear usuario</h5>
+        </div>
+
+        <div class="card-body">
+
+          <form class="form-create" method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+              <div class="mb-3">
+                
+                {{ field.label_tag }}
+                {{ field }}
+
+                {% if field.errors %}
+                  <div class="text-danger small">
+                    {{ field.errors }}
+                  </div>
+                {% endif %}
+
+              </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-dark w-100">
+              Guardar
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
 
     </div>
-  {% endfor %}
-  <button type="submit" class="btn btn-success">Guardar</button>
-  
-  </form>
-  
+  </div>
+
 </div>
 
+{% else %}
 
-{% else %}  <!-- aqui pongo el final del condicional para saber si el que accede es un administrador-->
+{% include 'accesoRestringido.html' %}
 
-{% include 'accesoRestringido.html' %}    <!--  Dentro de este archivo configuro el mensaje a mostar -->
-
-{% endif %}  <!-- aqui pongo el final del condicional para saber si el que accede es un administrador-->
+{% endif %}
 
 {% endblock %}
