@@ -1,0 +1,16 @@
+/* ----------- Botón de Login ----------- */
+  .register-button {
+    background-color: #000301; /* Color principal */
+    color: white; /* Texto blanco */
+    font-size: 16px; /* Tamaño del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 8px; /* Espaciado interno */
+    width: 50%; /* Ocupa todo el ancho */
+    cursor: pointer; /* Cambia el cursor al pasar */
+    transition: background-color 0.3s; /* Efecto de transición */
+  }
+
+  .register-button:hover {
+    background-color: #015ba9; /* Color al pasar el mouse */
+  }

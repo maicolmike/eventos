@@ -6,6 +6,7 @@
 {% if user.is_superuser %}
 
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/botonRegister.css' %}">
 
 <div class="container mt-5">
 
@@ -40,7 +41,7 @@
               </div>
             {% endfor %}
 
-            <button type="submit" class="btn btn-dark w-100">
+            <button type="submit" class="btn btn-dark w-100 register-button">
               Guardar
             </button>
 
