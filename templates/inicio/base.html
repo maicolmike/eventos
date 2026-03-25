@@ -17,7 +17,8 @@
     <script src="{% static 'lib/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- jQuery (necesario para algunos componentes de Bootstrap) -->
-    <script src="{% static 'lib/js/jquery-4.0.0.min.js' %}"></script> <!-- Aquí se incluye jQuery localmente -->
+    <!--<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+    <script src="{% static 'lib/jquery/jquery-3.7.1.min.js' %}"></script>
 
     <!-- fontawesome library -->
     <script src="https://kit.fontawesome.com/8c8b2bc594.js" crossorigin="anonymous"></script>
@@ -51,9 +52,14 @@
     <!-- Codigo para el año actual-->
     <script src="{% static 'js/anio.js' %}"></script>
 
+    <!-- Codigo para que funcione el proceso de busqueda del datatable-->
+    <script src="{% static 'js/datatable.js' %}"></script>
+
     <!-- Codigo para los mensajes con la libreria sweetalert-->
     <script src="{% static 'lib/sweetalert2-11.26.23/package/dist/sweetalert2.all.min.js' %}"></script>
     <script src="{% static 'js/notificacionSwal.js' %}"></script>
+
+    
      
 </body>
 </html>
