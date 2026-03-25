@@ -1,0 +1,103 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block sinNada %}
+<div class="container-fluid mt-4">
+
+  {% include 'inicio/messages.html' %}
+
+  <h4 class="text-center mb-4"><b>Listado de usuarios</b></h4>
+
+  <div class="table-responsive">
+    <table id="example1" class="table table-bordered table-hover align-middle">
+      <thead class="table-secondary text-center">
+        <tr>
+          <th>ID</th>
+          <th>Identificación</th>
+          <th>Nombres</th>
+          <th>Usuario</th>
+          <th>Agencia</th>
+          <th>Email</th>
+          <th>Tipo</th>
+          <th>Estado</th>
+          <th>Editar</th>
+          <th>Clave</th>
+          <th>Borrar</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for usuarios in lista_usuarios %}
+        <tr>
+          <td class="text-center">{{ usuarios.id }}</td>
+          <td>{{ usuarios.identificacion }}</td>
+          <td>{{ usuarios.nombres }}</td>
+          <td>{{ usuarios.username }}</td>
+          <td>{{ usuarios.agencia }}</td>
+          <td>{{ usuarios.email }}</td>
+
+          <td class="text-center">
+            {% if usuarios.is_superuser %}
+              <span class="badge bg-primary">Administrador</span>
+            {% else %}
+              <span class="badge bg-secondary">Cliente</span>
+            {% endif %}
+          </td>
+
+          <td class="text-center">
+            {% if usuarios.is_active %}
+              <span class="badge bg-success">Activo</span>
+            {% else %}
+              <span class="badge bg-danger">Inactivo</span>
+            {% endif %}
+          </td>
+
+          <!-- EDITAR -->
+          <td class="text-center">
+            <button class="btn btn-info btn-editar"
+              data-bs-toggle="modal"
+              data-bs-target="#modalEditar"
+              data-id="{{ usuarios.id }}"
+              data-identificacion="{{ usuarios.identificacion }}"
+              data-nombres="{{ usuarios.nombres }}"
+              data-username="{{ usuarios.username }}"
+              data-email="{{ usuarios.email }}"
+              data-agencia="{{ usuarios.agencia|upper }}"
+              data-superuser="{{ usuarios.is_superuser }}"
+              data-active="{{ usuarios.is_active }}">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+
+          <!-- CLAVE -->
+          <td class="text-center">
+            <button class="btn btn-success btn-clave"
+              data-bs-toggle="modal"
+              data-bs-target="#modalClave"
+              data-id="{{ usuarios.id }}">
+              <i class="fa-solid fa-key"></i>
+            </button>
+          </td>
+
+          <!-- ELIMINAR -->
+          <td class="text-center">
+            <button class="btn btn-danger btn-eliminar"
+              data-bs-toggle="modal"
+              data-bs-target="#modalEliminar"
+              data-id="{{ usuarios.id }}"
+              data-username="{{ usuarios.username }}">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<script src="{% static 'js/users/usuarios_modales.js' %}"></script>
+<script src="{% static 'js/ordenar.js' %}"></script>
+{% endblock %}
