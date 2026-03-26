@@ -1,0 +1,17 @@
+/* 1. Fondo azul y texto blanco para el ítem del menú */
+.dropdown-item:hover {
+    background-color: #007bff !important; /* Azul Bootstrap */
+    color: white !important; /* Texto blanco */
+}
+
+/* 2. Forzar que los iconos de FontAwesome también se pongan blancos */
+.dropdown-item:hover i {
+    color: white !important;
+}
+
+/* 3. Opcional: Si quieres que el botón principal "Acciones" también cambie al pasar el mouse */
+.btn-dark.dropdown-toggle:hover {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+
