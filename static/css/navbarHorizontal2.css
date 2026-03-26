@@ -12,3 +12,22 @@
 .navbar-collapse.show {
     background: rgba(0, 0, 0, 0.85) !important;
 }
+
+
+/* Cambia el color del texto y los iconos al pasar el mouse */
+.navbar-nav .nav-link:hover {
+    background-color: #007bff !important;
+    color: white !important;
+    transition: color 0.3s ease; /* Hace que el cambio sea suave */
+}
+
+/* Opcional: Si quieres que el icono de FontAwesome también cambie */
+.navbar-nav .nav-link:hover i {
+    color: white !important;
+}
+
+/* Estilo para los ítems del menú desplegable (Perfil) */
+.dropdown-item:hover {
+    background-color: #007bff !important;
+    color: white !important;
+}

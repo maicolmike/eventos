@@ -21,15 +21,15 @@
       <!-- MENÚ -->
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">📅 Crear evento</a>
+          <a class="nav-link" href="#"><i class="fas fa-calendar-plus text-danger"></i> Crear evento</a>
         </li>
 
         {% if user.is_superuser %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Crear usuarios</a>
+          <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus text-warning"></i> Crear usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users"></i> Listar usuarios</a>
+          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users text-info text-info"></i> Listar usuarios</a>
         </li>
         {% endif %}
       </ul>
