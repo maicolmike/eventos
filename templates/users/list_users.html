@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+
+{% if user.is_superuser %}
+
 <div class="container-fluid mt-5">
 
   {% include 'inicio/messages.html' %}
@@ -40,7 +43,7 @@
             {% if usuarios.is_superuser %}
               <span class="badge bg-primary">Administrador</span>
             {% else %}
-              <span class="badge bg-secondary">Cliente</span>
+              <span class="badge bg-warning text-dark">Cliente</span>
             {% endif %}
           </td>
 
@@ -97,4 +100,10 @@
 </div>
 
 <script src="{% static 'js/ordenarUsuarios.js' %}"></script>
+
+{% else %}
+
+{% include 'inicio/accesoRestringido.html' %}
+
+{% endif %}
 {% endblock %}

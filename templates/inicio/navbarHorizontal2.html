@@ -26,10 +26,10 @@
 
         {% if user.is_superuser %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}">👤 Crear usuarios</a>
+          <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus"></i> Crear usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_users' %}">👤 Listar usuarios</a>
+          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users"></i> Listar usuarios</a>
         </li>
         {% endif %}
       </ul>
@@ -43,7 +43,7 @@
             
             <!-- FOTO -->
             {% if user.is_superuser %}
-            <img src="{% static 'img/administrador.png' %}" class="rounded-circle me-2" width="35" height="35">
+            <img src="{% static 'img/administrador1.png' %}" class="rounded-circle me-2" width="35" height="35">
             {% else %}
             <img src="{% static 'img/cliente.png' %}" class="rounded-circle me-2" width="35" height="35">
             {% endif %}
@@ -56,9 +56,9 @@
             <li class="text-center p-2">
               <strong>{{ user.username }}</strong><br>
               {% if user.is_superuser %}
-                <span class="badge bg-danger">Administrador</span>
+                <span class="badge bg-primary">Administrador</span>
               {% else %}
-                <span class="badge bg-primary">Cliente</span>
+                <span class="badge bg-warning text-dark">Cliente</span>
               {% endif %}
             </li>
 
