@@ -15,3 +15,7 @@
     border-color: #007bff !important;
 }
 
+/* 4. Ajustar el tamaño de los iconos en los elementos del menú desplegable */
+.dropdown-item i {
+    font-size: 18px;  /* El icono siempre un poquito más grande que el texto */
+}
