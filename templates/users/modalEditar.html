@@ -1,11 +1,9 @@
-<!-- MODAL EDITAR -->
 <div class="modal fade" id="modalEditar" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <form id="formEditarUsuario">
-        {% csrf_token %}
-        <input type="hidden" name="id" id="edit_id">
+        {% csrf_token %} <input type="hidden" name="id" id="edit_id">
 
         <div class="modal-header">
           <h5 class="modal-title">Editar Usuario</h5>
@@ -13,13 +11,13 @@
         </div>
 
         <div class="modal-body">
+          <input class="form-control mb-2" id="edit_identificacion" name="identificacion" placeholder="Identificación" required>
+          <input class="form-control mb-2" id="edit_nombres" name="nombres" placeholder="Nombres" required>
+          <input class="form-control mb-2" id="edit_username" name="username" placeholder="Usuario" required>
+          <input class="form-control mb-2" id="edit_email" name="userEmail" placeholder="Email" required>
 
-          <input class="form-control mb-2" id="edit_identificacion" name="identificacion" placeholder="Identificación">
-          <input class="form-control mb-2" id="edit_nombres" name="nombres" placeholder="Nombres">
-          <input class="form-control mb-2" id="edit_username" name="username" placeholder="Usuario">
-          <input class="form-control mb-2" id="edit_email" name="userEmail" placeholder="Email">
-
-          <select class="form-control mb-2" id="edit_agencia" name="agencia" placeholder="Agencia">
+          <select class="form-control mb-2" id="edit_agencia" name="agencia" required>
+            <option value="">Seleccione una agencia</option>
             <option value="MOCOA">Mocoa</option>
             <option value="PUERTO ASIS">Puerto Asís</option>
             <option value="DORADA">Dorada</option>
@@ -30,18 +28,19 @@
             <option value="SIBUNDOY">Sibundoy</option>
           </select>
 
-          <select class="form-control mb-2" id="edit_superuser" name="tipousuario">
+          <select class="form-control mb-2" id="edit_superuser" name="tipousuario" required>
+            <option value="">Seleccione un tipo de usuario</option>
             <option value="1">Administrador</option>
             <option value="0">Cliente</option>
           </select>
 
-          <select class="form-control mb-2" id="edit_active" name="estado">
+          <select class="form-control mb-2" id="edit_active" name="estado" required>
+            <option value="">Seleccione un estado</option>
             <option value="1">Activo</option>
             <option value="0">Inactivo</option>
           </select>
 
           <div id="mensajeEditar"></div>
-
         </div>
 
         <div class="modal-footer">
@@ -50,18 +49,17 @@
         </div>
 
       </form>
-
     </div>
   </div>
 </div>
 
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
+    // Escucha el clic en cualquier botón que tenga la clase 'btn-editar'
     document.querySelectorAll(".btn-editar").forEach(btn => {
         btn.addEventListener("click", function () {
-
+            
+            // Llena los campos del modal usando los atributos 'data-' (dataset) del botón pulsado
             document.getElementById("edit_id").value = this.dataset.id;
             document.getElementById("edit_identificacion").value = this.dataset.identificacion;
             document.getElementById("edit_nombres").value = this.dataset.nombres;
@@ -69,50 +67,57 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("edit_email").value = this.dataset.email;
             document.getElementById("edit_agencia").value = this.dataset.agencia;
 
+            // Convierte los valores booleanos (True/False) de Django a valores del select (1/0)
             document.getElementById("edit_superuser").value = this.dataset.superuser === "True" ? "1" : "0";
             document.getElementById("edit_active").value = this.dataset.active === "True" ? "1" : "0";
 
+            // Limpia mensajes de alertas anteriores al abrir el modal
             document.getElementById("mensajeEditar").innerHTML = "";
         });
     });
-
 });
 </script>
 
 <script>
 document.getElementById("formEditarUsuario").addEventListener("submit", function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Detiene la recarga automática de la página
 
+    // Empaqueta todos los campos del formulario en un objeto FormData
     let formData = new FormData(this);
 
+    // Envía los datos a la URL definida en Django
     fetch("{% url 'user_update_ajax' %}", {
         method: "POST",
         body: formData,
         headers: {
+            // Envía el token CSRF en la cabecera para pasar la seguridad de Django
             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
         }
     })
-    .then(response => response.json())
+    .then(response => response.json()) // Convierte la respuesta del servidor a formato JSON
     .then(data => {
-
         let mensaje = document.getElementById("mensajeEditar");
 
         if (data.status === "success") {
-
+            // Muestra alerta verde de éxito
             mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
 
+            // Espera 1.2 segundos antes de cerrar el modal y recargar la tabla
             setTimeout(() => {
-                let modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
+                let modalElement = document.getElementById('modalEditar');
+                let modal = bootstrap.Modal.getInstance(modalElement);
                 modal.hide();
 
-                location.reload(); // recarga tabla
+                location.reload(); // Recarga la página para mostrar los datos actualizados
             }, 1200);
 
         } else {
+            // Muestra alerta roja de error (ej: usuario duplicado) y mantiene el modal abierto
             mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
         }
-
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+        console.error("Error en la petición:", error);
+    });
 });
 </script>
