@@ -7,6 +7,8 @@ from .forms import LoginUser, RegistroUsuario,CambiarClaveForm  # 👈 IMPORTANT
 from django.contrib.auth.decorators import login_required
 from .models import User
 from django.contrib.auth import update_session_auth_hash
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 #Inicio de sesion login
 def login_view(request):
@@ -106,3 +108,36 @@ def change_password(request):
         messages.success(request, 'Contraseña cambiada exitosamente.')
 
     return render(request, 'users/change_password.html', {'form': form, 'title': 'Cambiar clave'})
+
+#Actualizar usuario con ajax
+
+@login_required(login_url='login')
+def user_update_ajax(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')
+
+        user = get_object_or_404(User, id=user_id)
+
+        username = request.POST.get('username')
+        identificacion = request.POST.get('identificacion')
+
+        # Validaciones
+        if User.objects.filter(username=username).exclude(id=user_id).exists():
+            return JsonResponse({'status': 'error', 'message': 'El usuario ya existe'})
+
+        if User.objects.filter(identificacion=identificacion).exclude(id=user_id).exists():
+            return JsonResponse({'status': 'error', 'message': 'La identificación ya existe'})
+
+        # Actualizar
+        user.identificacion = identificacion
+        user.nombres = request.POST.get('nombres')
+        user.username = username
+        user.email = request.POST.get('userEmail')
+        user.agencia = request.POST.get('agencia')
+        user.is_superuser = bool(int(request.POST.get('tipousuario')))
+        user.is_active = bool(int(request.POST.get('estado')))
+        user.save()
+
+        return JsonResponse({'status': 'success', 'message': 'Usuario actualizado correctamente'})
+
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'})

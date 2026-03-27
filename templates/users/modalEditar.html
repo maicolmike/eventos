@@ -1,0 +1,118 @@
+<!-- MODAL EDITAR -->
+<div class="modal fade" id="modalEditar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form id="formEditarUsuario">
+        {% csrf_token %}
+        <input type="hidden" name="id" id="edit_id">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <input class="form-control mb-2" id="edit_identificacion" name="identificacion" placeholder="Identificación">
+          <input class="form-control mb-2" id="edit_nombres" name="nombres" placeholder="Nombres">
+          <input class="form-control mb-2" id="edit_username" name="username" placeholder="Usuario">
+          <input class="form-control mb-2" id="edit_email" name="userEmail" placeholder="Email">
+
+          <select class="form-control mb-2" id="edit_agencia" name="agencia" placeholder="Agencia">
+            <option value="MOCOA">Mocoa</option>
+            <option value="PUERTO ASIS">Puerto Asís</option>
+            <option value="DORADA">Dorada</option>
+            <option value="HORMIGA">Hormiga</option>
+            <option value="ORITO">Orito</option>
+            <option value="VILLA GARZON">Villa Garzón</option>
+            <option value="PUERTO LEGUIZAMO">Puerto Leguízamo</option>
+            <option value="SIBUNDOY">Sibundoy</option>
+          </select>
+
+          <select class="form-control mb-2" id="edit_superuser" name="tipousuario">
+            <option value="1">Administrador</option>
+            <option value="0">Cliente</option>
+          </select>
+
+          <select class="form-control mb-2" id="edit_active" name="estado">
+            <option value="1">Activo</option>
+            <option value="0">Inactivo</option>
+          </select>
+
+          <div id="mensajeEditar"></div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".btn-editar").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            document.getElementById("edit_id").value = this.dataset.id;
+            document.getElementById("edit_identificacion").value = this.dataset.identificacion;
+            document.getElementById("edit_nombres").value = this.dataset.nombres;
+            document.getElementById("edit_username").value = this.dataset.username;
+            document.getElementById("edit_email").value = this.dataset.email;
+            document.getElementById("edit_agencia").value = this.dataset.agencia;
+
+            document.getElementById("edit_superuser").value = this.dataset.superuser === "True" ? "1" : "0";
+            document.getElementById("edit_active").value = this.dataset.active === "True" ? "1" : "0";
+
+            document.getElementById("mensajeEditar").innerHTML = "";
+        });
+    });
+
+});
+</script>
+
+<script>
+document.getElementById("formEditarUsuario").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch("{% url 'user_update_ajax' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        let mensaje = document.getElementById("mensajeEditar");
+
+        if (data.status === "success") {
+
+            mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+
+            setTimeout(() => {
+                let modal = bootstrap.Modal.getInstance(document.getElementById('modalEditar'));
+                modal.hide();
+
+                location.reload(); // recarga tabla
+            }, 1200);
+
+        } else {
+            mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+        }
+
+    })
+    .catch(error => console.error(error));
+});
+</script>
