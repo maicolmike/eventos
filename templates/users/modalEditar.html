@@ -54,70 +54,126 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Escucha el clic en cualquier botón que tenga la clase 'btn-editar'
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ================================
+    // 🔹 REFERENCIAS A ELEMENTOS HTML
+    // ================================
+    const modal = document.getElementById("modalEditar"); // Modal completo
+    const form = document.getElementById("formEditarUsuario"); // Formulario
+    const mensaje = document.getElementById("mensajeEditar"); // Contenedor de mensajes
+
+    // =====================================
+    // 🔹 LISTA DE CAMPOS QUE VAMOS A LLENAR
+    // =====================================
+    // Esto evita repetir muchas líneas de código
+    const campos = [
+        "id",
+        "identificacion",
+        "nombres",
+        "username",
+        "email",
+        "agencia"
+    ];
+
+    // ==========================================
+    // 🔹 EVENTO: CUANDO DAN CLICK EN "EDITAR"
+    // ==========================================
     document.querySelectorAll(".btn-editar").forEach(btn => {
-        btn.addEventListener("click", function () {
-            
-            // Llena los campos del modal usando los atributos 'data-' (dataset) del botón pulsado
-            document.getElementById("edit_id").value = this.dataset.id;
-            document.getElementById("edit_identificacion").value = this.dataset.identificacion;
-            document.getElementById("edit_nombres").value = this.dataset.nombres;
-            document.getElementById("edit_username").value = this.dataset.username;
-            document.getElementById("edit_email").value = this.dataset.email;
-            document.getElementById("edit_agencia").value = this.dataset.agencia;
 
-            // Convierte los valores booleanos (True/False) de Django a valores del select (1/0)
-            document.getElementById("edit_superuser").value = this.dataset.superuser === "True" ? "1" : "0";
-            document.getElementById("edit_active").value = this.dataset.active === "True" ? "1" : "0";
+        btn.addEventListener("click", () => {
 
-            // Limpia mensajes de alertas anteriores al abrir el modal
-            document.getElementById("mensajeEditar").innerHTML = "";
+            // Recorremos cada campo y lo llenamos automáticamente
+            campos.forEach(campo => {
+
+                // Construye el id dinámicamente: edit_nombre, edit_email, etc.
+                const input = document.getElementById(`edit_${campo}`);
+
+                // Asigna el valor desde los atributos data-* del botón
+                input.value = btn.dataset[campo] || "";
+            });
+
+            // ==========================================
+            // 🔹 MANEJO DE BOOLEANOS (True / False)
+            // ==========================================
+            // Django envía "True" o "False", pero el select usa "1" o "0"
+            document.getElementById("edit_superuser").value =
+                btn.dataset.superuser === "True" ? "1" : "0";
+
+            document.getElementById("edit_active").value =
+                btn.dataset.active === "True" ? "1" : "0";
+
+            // Limpia mensajes anteriores
+            mensaje.innerHTML = "";
         });
     });
-});
-</script>
 
-<script>
-document.getElementById("formEditarUsuario").addEventListener("submit", function(e) {
-    e.preventDefault(); // Detiene la recarga automática de la página
+    // ==========================================
+    // 🔹 EVENTO: ENVÍO DEL FORMULARIO (AJAX)
+    // ==========================================
+    form.addEventListener("submit", async (e) => {
 
-    // Empaqueta todos los campos del formulario en un objeto FormData
-    let formData = new FormData(this);
+        // Evita que la página se recargue (CLAVE para AJAX)
+        e.preventDefault();
 
-    // Envía los datos a la URL definida en Django
-    fetch("{% url 'user_update_ajax' %}", {
-        method: "POST",
-        body: formData,
-        headers: {
-            // Envía el token CSRF en la cabecera para pasar la seguridad de Django
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        // Mensaje de carga mientras se envía la información
+        mensaje.innerHTML = `<div class="alert alert-info">Guardando...</div>`;
+
+        try {
+            // ==========================================
+            // 🔹 CAPTURAR DATOS DEL FORMULARIO
+            // ==========================================
+            const formData = new FormData(form);
+
+            // ==========================================
+            // 🔹 ENVIAR DATOS A DJANGO (FETCH = AJAX)
+            // ==========================================
+            const response = await fetch("{% url 'user_update_ajax' %}", {
+                method: "POST",
+                body: formData,
+
+                // Token de seguridad requerido por Django
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
+
+            // Convertir respuesta a JSON
+            const data = await response.json();
+
+            // ==========================================
+            // 🔹 MANEJO DE RESPUESTA DEL SERVIDOR
+            // ==========================================
+            if (data.status === "success") {
+
+                // Mostrar mensaje de éxito
+                mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+
+                // Esperar un momento antes de cerrar el modal
+                setTimeout(() => {
+
+                    // Cerrar modal
+                    bootstrap.Modal.getInstance(modal).hide();
+
+                    // Recargar la página para ver cambios (puede mejorarse)
+                    location.reload();
+
+                }, 1000);
+
+            } else {
+                // Mostrar error si algo falló (ej: usuario duplicado)
+                mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            }
+
+        } catch (error) {
+            // ==========================================
+            // 🔹 ERROR DE CONEXIÓN O FALLA DEL SERVIDOR
+            // ==========================================
+            mensaje.innerHTML = `<div class="alert alert-danger">Error de conexión con el servidor</div>`;
+
+            console.error("Error:", error);
         }
-    })
-    .then(response => response.json()) // Convierte la respuesta del servidor a formato JSON
-    .then(data => {
-        let mensaje = document.getElementById("mensajeEditar");
-
-        if (data.status === "success") {
-            // Muestra alerta verde de éxito
-            mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-
-            // Espera 1.2 segundos antes de cerrar el modal y recargar la tabla
-            setTimeout(() => {
-                let modalElement = document.getElementById('modalEditar');
-                let modal = bootstrap.Modal.getInstance(modalElement);
-                modal.hide();
-
-                location.reload(); // Recarga la página para mostrar los datos actualizados
-            }, 1200);
-
-        } else {
-            // Muestra alerta roja de error (ej: usuario duplicado) y mantiene el modal abierto
-            mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-        }
-    })
-    .catch(error => {
-        console.error("Error en la petición:", error);
     });
+
 });
 </script>
