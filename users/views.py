@@ -96,7 +96,7 @@ def perfil(request):
 
     return render(request, 'users/perfil.html', {
         'form': form,
-        'title': 'Editar perfil'
+        'title': 'Mi perfil'
     })
 
 #cambiar clave

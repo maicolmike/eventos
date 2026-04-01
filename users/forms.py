@@ -98,6 +98,7 @@ class RegistroUsuarioForm(forms.Form):
 # Formulario para editar perfil de usuario utilizando ModelForm
 class EditarPerfilForm(forms.ModelForm):
 
+    # Opciones para el campo agencia
     AGENCIA_CHOICES = [
         ('MOCOA', 'Mocoa'),
         ('PUERTO ASIS', 'Puerto Asis'),
@@ -109,16 +110,19 @@ class EditarPerfilForm(forms.ModelForm):
         ('SIBUNDOY', 'Sibundoy'),
     ]
 
+    # Opciones para el campo tipo de usuario
     TIPOS_USUARIO = [
         (1, 'Administrador'),
         (2, 'Cliente'),
     ]
 
+    # Campos adicionales para mostrar en el formulario
     agencia = forms.ChoiceField(
         choices=AGENCIA_CHOICES,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
+    # Campo para mostrar el tipo de usuario (solo lectura)
     is_superuser = forms.CharField(
         label='Tipo de usuario',
         required=False,
@@ -129,6 +133,7 @@ class EditarPerfilForm(forms.ModelForm):
         })
     )
 
+    # Especificamos el modelo y los campos que queremos mostrar en el formulario
     class Meta:
         model = User
         # Especificamos los campos que queremos mostrar en el formulario
@@ -181,6 +186,7 @@ class EditarPerfilForm(forms.ModelForm):
     def clean_username(self):
         return self.instance.username
 
+    # PROTECCIÓN BACKEND
     def clean_is_superuser(self):
         return 'Administrador' if self.instance.is_superuser else 'Cliente'
 
