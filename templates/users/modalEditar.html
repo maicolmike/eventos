@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
-      <form id="formEditarUsuario">
+      <form id="formEditarUsuario" data-url="{% url 'user_update_ajax' %}"> <!-- Agregamos el atributo data-url con la URL de Django para poder utilizar modalEditar.js -->
         {% csrf_token %} <input type="hidden" name="id" id="edit_id">
 
         <div class="modal-header bg-dark text-white">
