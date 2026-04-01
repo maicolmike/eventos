@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import LoginUser, RegistroUsuario,CambiarClaveForm  # 👈 IMPORTANTE
+from .forms import LoginUser, RegistroUsuarioForm,EditarPerfilForm,CambiarClaveForm
 from django.contrib.auth.decorators import login_required
 from .models import User
 from django.contrib.auth import update_session_auth_hash
@@ -46,7 +46,7 @@ def logout_view(request):
 #Registrar usuario
 @login_required(login_url='login')    
 def register(request):
-    form = RegistroUsuario(request.POST or None)
+    form = RegistroUsuarioForm(request.POST or None)
     
     if request.method == 'POST' and form.is_valid():
         user = form.save() #save () se encuentra en el archivo forms.py
@@ -71,6 +71,32 @@ def list_users(request):
     return render(request, 'users/list_users.html',{ 
         'title': "Listado Usuarios",
         'lista_usuarios': lista_usuarios,
+    })
+#Editar perfil
+@login_required(login_url='login')    
+def perfil(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = EditarPerfilForm(request.POST, instance=user)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            # 🔒 BLOQUEO TOTAL (aunque manipulen el HTML)
+            user.username = request.user.username
+            user.is_superuser = request.user.is_superuser
+
+            user.save()
+
+            messages.success(request, 'Perfil actualizado exitosamente.')
+
+    else:
+        form = EditarPerfilForm(instance=user)
+
+    return render(request, 'users/perfil.html', {
+        'form': form,
+        'title': 'Editar perfil'
     })
 
 #cambiar clave
@@ -110,7 +136,6 @@ def change_password(request):
     return render(request, 'users/change_password.html', {'form': form, 'title': 'Cambiar clave'})
 
 #Actualizar usuario con ajax
-
 @login_required(login_url='login')
 def user_update_ajax(request):
     if request.method == 'POST':

@@ -2,6 +2,7 @@ from django import forms
 #from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
+# Formulario de inicio de sesión
 class LoginUser(forms.Form):
     username = forms.CharField(required=True, min_length=4, max_length=50,label='Usuario',
                                widget=forms.TextInput(attrs={'class': 'form-control',
@@ -11,8 +12,8 @@ class LoginUser(forms.Form):
                                widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                              'id': 'password',
                                                              'placeholder': 'Contraseña'}))
-
-class RegistroUsuario(forms.Form):
+# Formulario de registro de usuario
+class RegistroUsuarioForm(forms.Form):
     
     identificacion = forms.CharField(required=True, min_length=4, max_length=50,label='identificacion',
                                widget=forms.TextInput(attrs={'class': 'form-control',
@@ -21,7 +22,7 @@ class RegistroUsuario(forms.Form):
     
     nombres = forms.CharField(required=True, min_length=4, max_length=50,label='nombres',
                                widget=forms.TextInput(attrs={'class': 'form-control',
-                                                             'id': 'identificacion',
+                                                             'id': 'nombres',
                                                              'placeholder': 'nombres'}))
     
     username = forms.CharField(required=True, min_length=4, max_length=50,label='Usuario',
@@ -94,6 +95,85 @@ class RegistroUsuario(forms.Form):
 
         return user
 
+# Formulario para editar perfil de usuario utilizando ModelForm
+class EditarPerfilForm(forms.ModelForm):
+
+    AGENCIA_CHOICES = [
+        ('MOCOA', 'Mocoa'),
+        ('PUERTO ASIS', 'Puerto Asis'),
+        ('DORADA', 'Dorada'),
+        ('HORMIGA', 'Hormiga'),
+        ('ORITO', 'Orito'),
+        ('VILLA GARZON', 'Villa Garzon'),
+        ('PUERTO LEGUIZAMO', 'Puerto Leguizamo'),
+        ('SIBUNDOY', 'Sibundoy'),
+    ]
+
+    TIPOS_USUARIO = [
+        (1, 'Administrador'),
+        (0, 'Cliente'),
+    ]
+
+    agencia = forms.ChoiceField(
+        choices=AGENCIA_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    is_superuser = forms.CharField(
+        label='Tipo de usuario',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly'
+        })
+    )
+
+    class Meta:
+        model = User
+        # Especificamos los campos que queremos mostrar en el formulario
+        fields = [
+            'identificacion',
+            'nombres',
+            'username',
+            'agencia',
+            'email',
+        ]
+        # Personalizar los nombres de los Labels
+        labels = {
+            'username': 'Usuario',
+            'email': 'Email',
+            'is_superuser': 'Tipo de usuario',
+        }
+        # Personalizar los widgets para cada campo
+        widgets = {
+            'identificacion': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+             'username': forms.TextInput(attrs={
+                'class': 'form-control',
+                'readonly': 'readonly'
+            }),
+            #'agencia': forms.Select(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            #'is_superuser': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
+     # 🔥 Inicializar valores
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance:
+            self.fields['username'].initial = self.instance.username
+            self.fields['is_superuser'].initial = (
+                'Administrador' if self.instance.is_superuser else 'Cliente'
+            )
+
+    # 🔒 PROTECCIÓN BACKEND
+    def clean_username(self):
+        return self.instance.username
+
+    def clean_is_superuser(self):
+        return 'Administrador' if self.instance.is_superuser else 'Cliente'
+        
+# Formulario para cambiar contraseña
 class CambiarClaveForm(forms.Form):
     passwordActual = forms.CharField(label= 'Contraseña actual',required=True,
                                     widget=forms.PasswordInput(attrs={
