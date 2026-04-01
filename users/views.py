@@ -83,7 +83,7 @@ def perfil(request):
         if form.is_valid():
             user = form.save(commit=False)
 
-            # 🔒 BLOQUEO TOTAL (aunque manipulen el HTML)
+            # BLOQUEO TOTAL (aunque manipulen el HTML)
             user.username = request.user.username
             user.is_superuser = request.user.is_superuser
 

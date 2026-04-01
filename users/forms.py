@@ -111,7 +111,7 @@ class EditarPerfilForm(forms.ModelForm):
 
     TIPOS_USUARIO = [
         (1, 'Administrador'),
-        (0, 'Cliente'),
+        (2, 'Cliente'),
     ]
 
     agencia = forms.ChoiceField(
@@ -124,7 +124,8 @@ class EditarPerfilForm(forms.ModelForm):
         required=False,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'readonly': 'readonly'
+            'readonly': 'readonly',
+            'style': 'background-color: #e9ecef; cursor: not-allowed;'
         })
     )
 
@@ -150,13 +151,23 @@ class EditarPerfilForm(forms.ModelForm):
             'nombres': forms.TextInput(attrs={'class': 'form-control'}),
              'username': forms.TextInput(attrs={
                 'class': 'form-control',
-                'readonly': 'readonly'
+                'readonly': 'readonly',
+                'style': 'background-color: #e9ecef; cursor: not-allowed;'
             }),
             #'agencia': forms.Select(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             #'is_superuser': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly'}),
         }
-     # 🔥 Inicializar valores
+    
+    # VALIDACIÓN PERSONALIZADA PARA IDENTIFICACIÓN
+    def clean_identificacion(self):
+        identificacion = self.cleaned_data.get('identificacion')
+        # Buscamos si existe otro usuario con esa ID, excluyendo al usuario actual (self.instance)
+        if User.objects.filter(identificacion=identificacion).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Erro el número de identificación ya existe en el sistema.")
+        return identificacion
+
+     #  Inicializar valores
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -166,13 +177,13 @@ class EditarPerfilForm(forms.ModelForm):
                 'Administrador' if self.instance.is_superuser else 'Cliente'
             )
 
-    # 🔒 PROTECCIÓN BACKEND
+    # PROTECCIÓN BACKEND
     def clean_username(self):
         return self.instance.username
 
     def clean_is_superuser(self):
         return 'Administrador' if self.instance.is_superuser else 'Cliente'
-        
+
 # Formulario para cambiar contraseña
 class CambiarClaveForm(forms.Form):
     passwordActual = forms.CharField(label= 'Contraseña actual',required=True,
