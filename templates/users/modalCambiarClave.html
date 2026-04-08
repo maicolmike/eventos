@@ -1,0 +1,32 @@
+{% load static %}
+<div class="modal fade" id="modalCambiarClave" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form id="formCambiarClave" data-url="{% url 'change_password_ajax' %}">
+        {% csrf_token %}
+        <input type="hidden" id="clave_id" name="id">
+
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title">Cambiar Contraseña</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="password" name="password" id="nueva_password" class="form-control mb-2" placeholder="Nueva contraseña" required>
+
+          <div id="mensajeClave"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/modalCambiarClave.js' %}"></script>

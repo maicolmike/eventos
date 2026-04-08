@@ -61,6 +61,7 @@
                 Acciones
               </button>
               <ul class="dropdown-menu shadow">
+
                 <li>
                   <a class="dropdown-item btn-editar" href="#" 
                   data-bs-toggle="modal" data-bs-target="#modalEditar"
@@ -71,12 +72,15 @@
                   <i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar Usuario
                   </a>
                 </li>
+
                 <li>
-                  <a class="dropdown-item btn-clave" href="#" 
-                  data-bs-toggle="modal" data-bs-target="#modalClave" data-id="{{ usuarios.id }}">
+                  <a class="dropdown-item btn-cambiar-clave" href="#" 
+                  data-bs-toggle="modal" data-bs-target="#modalCambiarClave" 
+                  data-id="{{ usuarios.id }}">
                   <i class="fa-solid fa-key text-warning me-2"></i>Cambiar Clave
                   </a>
                 </li>
+
                 <li><hr class="dropdown-divider"></li>
                 <li>
                   <a class="dropdown-item btn-eliminar text-danger" href="#" 
@@ -94,7 +98,10 @@
     </table>
   </div>
 </div>
+
 {% include 'users/modalEditar.html' %}
+{% include 'users/modalCambiarClave.html' %}
+
 <script src="{% static 'js/ordenarUsuarios.js' %}"></script>
 
 {% else %}

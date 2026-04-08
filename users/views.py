@@ -99,7 +99,7 @@ def perfil(request):
         'title': 'Mi perfil'
     })
 
-#cambiar clave
+#cambiar contraseña
 @login_required(login_url='login')    
 def change_password(request):
     
@@ -164,5 +164,38 @@ def user_update_ajax(request):
         user.save()
 
         return JsonResponse({'status': 'success', 'message': 'Usuario actualizado correctamente'})
+
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'})
+
+# CAMBIAR CLAVE DESDE LISTADO (AJAX)
+@login_required(login_url='login')
+def change_password_ajax(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')
+        # Validación básica para asegurarnos de que se recibió el ID del usuario
+        if not user_id:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'ID de usuario no recibido'
+                })
+        nueva_password = request.POST.get('password')
+
+        user = get_object_or_404(User, id=user_id)
+
+        # VALIDACIÓN BÁSICA
+        if not nueva_password or len(nueva_password) < 4:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'La contraseña debe tener al menos 4 caracteres'
+            })
+
+        # CAMBIAR CLAVE
+        user.set_password(nueva_password)
+        user.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Contraseña actualizada correctamente'
+        })
 
     return JsonResponse({'status': 'error', 'message': 'Método no permitido'})
