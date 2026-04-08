@@ -199,3 +199,33 @@ def change_password_ajax(request):
         })
 
     return JsonResponse({'status': 'error', 'message': 'Método no permitido'})
+
+# ELIMINAR USUARIO (AJAX)
+@login_required(login_url='login')
+def delete_user_ajax(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')
+
+        if not user_id:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'ID no recibido'
+            })
+
+        user = get_object_or_404(User, id=user_id)
+
+        # 🔒 OPCIONAL: evitar que se elimine a sí mismo
+        if user == request.user:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'No puedes eliminar tu propio usuario'
+            })
+
+        user.delete()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Usuario eliminado correctamente'
+        })
+
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'})

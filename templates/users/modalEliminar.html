@@ -1,0 +1,33 @@
+{% load static %}
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form id="formEliminar" data-url="{% url 'delete_user_ajax' %}">
+        {% csrf_token %}
+        <input type="hidden" id="delete_id" name="id">
+
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title">Eliminar Usuario</h5>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body text-center">
+          <p>¿Seguro que deseas eliminar a:</p>
+          <h5 id="delete_username" class="text-danger"></h5>
+
+          <div id="mensajeEliminar"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/modalEliminar.js' %}"></script>
