@@ -208,3 +208,10 @@ class CambiarClaveForm(forms.Form):
             'class': 'form-control',
             'id': 'passwordNewConfirm',
             'placeholder': 'Confirmar contraseña'}))
+            
+# Formulario para recuperar contraseña
+class LoginUserRecuperarClave(forms.Form):
+    username = forms.CharField(required=True, min_length=4, max_length=50,label='Usuario',
+                               widget=forms.TextInput(attrs={'class': 'form-control',
+                                                             'id': 'username',
+                                                             'placeholder': 'Usuario'}))

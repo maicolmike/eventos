@@ -11,4 +11,5 @@ urlpatterns = [
     path('user_update_ajax/', views.user_update_ajax, name='user_update_ajax'),
     path('change_password_ajax/', views.change_password_ajax, name='change_password_ajax'),
     path('delete_user_ajax/', views.delete_user_ajax, name='delete_user_ajax'),
+    path('recuperar_clave/', views.recuperar_clave, name='recuperar_clave'),
 ]
