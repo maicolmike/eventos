@@ -1,41 +1,37 @@
 /* ----------- Estilo General ----------- */
 body {
-    display: flex; /* Flexbox para centrar contenido */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
     height: 100vh; /* Ocupa toda la altura de la pantalla */
-    margin: 0; /* Elimina márgenes */
     font-family: 'Poppins', sans-serif; /* Fuente */
     background-image: url('../img/fondo.png'); /* Subir un nivel y entrar a img /* Imagen de fondo */
     background-size: cover; /* Ajusta el tamaño */
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
+    background-position: center; /* Centra la imagen de fondo */
+    display: flex;              /* Activa flexbox */
+    justify-content: center;    /* Centra horizontal */
+    align-items: center;        /* Centra vertical */
+  }
+
+  /* Logo de la aplicación */
+  .avatar img {
+    margin-bottom: 5px; /* Espaciado inferior */
+    width: 300px; /* Tamaño del logo */
   }
   
 
   /* ----------- Contenedor de Login ----------- */
   .login-container {
-    position: relative; /* Asegura que esté sobre la capa transparente */
-    z-index: 2; /* Coloca el contenedor encima de la capa */
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
-    width: 380px; /* Ancho fijo del contenedor */
+    background-color: rgba(243, 242, 244, 0.9); /* Fondo blanco con transparencia */
+    width: 400px; /* Ancho fijo del contenedor */
+    border: 1px solid #4f4e4e; /* Borde del campo */
     border-radius: 10px; /* Bordes redondeados */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     padding: 20px 30px; /* Espaciado interno */
     text-align: center; /* Centra el texto */
   }
   
-  /* Logo de la aplicación */
-  .avatar img {
-    margin-bottom: 10px; /* Espaciado inferior */
-    width: 300px; /* Tamaño del logo */
-  }
-  
   /* Título */
-  h2 {
-    color: #333; /* Color del texto */
-    margin-bottom: 20px; /* Espaciado inferior */
+  h1.font-weight-normal {
+    color: #000905; /* Cambia el color del título a un tono más oscuro para mejor contraste */
+    display: block; /* Agregamos esto para asegurar que se vea el cambio */
   }
   
   /* ----------- Campos de Entrada ----------- */
@@ -43,8 +39,8 @@ body {
     display: flex; /* Organiza ícono y campo de texto en línea */
     align-items: center; /* Alinea verticalmente */
     margin-bottom: 15px; /* Espaciado entre campos */
-    border: 1px solid #ccc; /* Borde del campo */
-    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #989797; /* Borde del campo */
+    border-radius: 10px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
     background-color: #f0f0f0; /* Fondo claro */
   }
@@ -52,12 +48,12 @@ body {
   /* Ícono dentro del campo */
   .input-group i {
     margin-right: 10px; /* Espaciado a la derecha del ícono */
-    color: #080808; /* Color del ícono */
+    color: #000804; /* Color del ícono */
   }
-  
+
   /* Estilo del campo de entrada */
   .input-group input {
-    border: none; /* Elimina el borde */
+    border: 2px solid #dedada; /* Elimina el borde */
     outline: none; /* Elimina el borde de enfoque */
     width: 90%; /* Ocupa todo el espacio restante */
     font-size: 14px; /* Tamaño del texto */
@@ -65,18 +61,18 @@ body {
   
   /* ----------- Botón de Login ----------- */
   .login-button {
-    background-color: #22bca7; /* Color principal */
+    background-color: #015e36; /* Color principal */
     color: white; /* Texto blanco */
     font-size: 16px; /* Tamaño del texto */
     border: none; /* Elimina el borde */
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 1px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
     width: 45%; /* Ocupa todo el ancho */
     cursor: pointer; /* Cambia el cursor al pasar */
     transition: background-color 0.3s; /* Efecto de transición */
   }
-  
+
   .login-button:hover {
-    background-color: #1da890; /* Color al pasar el mouse */
+    background-color: #015ba9; /* Color al pasar el mouse */
   }
   

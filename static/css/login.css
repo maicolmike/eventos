@@ -4,8 +4,7 @@ body {
     font-family: 'Poppins', sans-serif; /* Fuente */
     background-image: url('../img/fondo.png'); /* Subir un nivel y entrar a img /* Imagen de fondo */
     background-size: cover; /* Ajusta el tamaño */
-    background-size: cover; /* Ajusta el tamaño */
-    background-position: center;
+    background-position: center; /* Centra la imagen de fondo */
     display: flex;              /* Activa flexbox */
     justify-content: center;    /* Centra horizontal */
     align-items: center;        /* Centra vertical */
@@ -22,8 +21,8 @@ body {
   .login-container {
     background-color: rgba(243, 242, 244, 0.9); /* Fondo blanco con transparencia */
     width: 400px; /* Ancho fijo del contenedor */
-    border: 2px solid #ccc; /* Borde del campo */
-    border-radius: 25px; /* Bordes redondeados */
+    border: 1px solid #4f4e4e; /* Borde del campo */
+    border-radius: 10px; /* Bordes redondeados */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     padding: 20px 30px; /* Espaciado interno */
     text-align: center; /* Centra el texto */
@@ -31,18 +30,17 @@ body {
   
 /* Título */
   h1.font-weight-normal {
-    color: #015e36; 
-    /* Agregamos esto para asegurar que se vea el cambio */
-    display: block; 
-}
+    color: #00120a; 
+    display: block;  /* Agregamos esto para asegurar que se vea el cambio */
+  }
   
  /* ----------- Campos de Entrada ----------- */
   .input-group {
     display: flex; /* Organiza ícono y campo de texto en línea */
     align-items: center; /* Alinea verticalmente */
     margin-bottom: 15px; /* Espaciado entre campos */
-    border: 2px solid #ccc; /* Borde del campo */
-    border-radius: 25px; /* Bordes redondeados */
+    border: 1px solid #989797; /* Borde del campo */
+    border-radius: 10px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
     background-color: #f0f0f0; /* Fondo claro */
   }
@@ -50,12 +48,12 @@ body {
   /* Ícono dentro del campo */
   .input-group i {
     margin-right: 10px; /* Espaciado a la derecha del ícono */
-    color: #015e36; /* Color del ícono */
+    color: #000402; /* Color del ícono */
   }
 
   /* Estilo del campo de entrada */
   .input-group input {
-    border: none; /* Elimina el borde */
+    border: 2px solid #dedada; /* Elimina el borde */
     outline: none; /* Elimina el borde de enfoque */
     width: 90%; /* Ocupa todo el espacio restante */
     font-size: 14px; /* Tamaño del texto */
@@ -67,7 +65,7 @@ body {
     color: white; /* Texto blanco */
     font-size: 16px; /* Tamaño del texto */
     border: none; /* Elimina el borde */
-    border-radius: 15px; /* Bordes redondeados */
+    border-radius: 5px; /* Bordes redondeados */
     padding: 10px; /* Espaciado interno */
     width: 50%; /* Ocupa todo el ancho */
     cursor: pointer; /* Cambia el cursor al pasar */
@@ -78,12 +76,12 @@ body {
     background-color: #015ba9; /* Color al pasar el mouse */
   }
 
-  /* Enlace para recuperar contraseña */
+  /* - - - - - - Enlace para recuperar contraseña - - - - - */
   .forgot-password {
-    display: block;
+    display: block; /* Hace que el enlace ocupe toda la línea */
     margin: 14px 0; /* Espaciado */
     font-size: 14px; /* Tamaño del texto */
-    color: #04675a; /* Color del texto */
+    color: #000605; /* Color del texto */
     text-decoration: none; /* Elimina subrayado */
     transition: color 0.3s ease; /* Opcional: hace que el cambio de color sea suave */
   }
@@ -93,11 +91,11 @@ body {
     color: #0056b3; /* Este es un azul estándar de enlace (puedes ajustarlo) */
   }
 
-   /* para que el mensaje se ponga adelante de la transparencia */
+   /* - - - - - - para que el mensaje se ponga adelante de la transparencia - - - - - */
   .mensajes {  
     position: relative; /* Asegura que esté sobre la capa transparente */
     z-index: 2; /* Coloca el contenedor encima de la capa */
-    text-align: center;
+    text-align: center; /* Centra el texto */
     max-width: 350px; /* tamaño del mensaje de alerta */
     margin: 0 auto;  /* se ajuste al lado del login */
     font-size: 15px; /* tamaño del la letra del mensaje de alerta */
