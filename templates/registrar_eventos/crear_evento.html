@@ -1,0 +1,15 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+
+{% include 'inicio/messages.html' %}
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+    </form>
+</div>
+
+{% endblock %}

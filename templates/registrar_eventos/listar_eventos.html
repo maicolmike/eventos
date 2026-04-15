@@ -1,0 +1,16 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Eventos</h2>
+    <a href="/eventos/crear/">Crear evento</a>
+    <ul>
+    {% for e in eventos %}
+    <li>{{ e.nombre }} - {{ e.fecha_actividad }}</li>
+    {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}
