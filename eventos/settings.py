@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'registrar_eventos',
 ]
 AUTH_USER_MODEL = 'users.User' #con esto ya no utilizamos el user del sistema sino el nuestro
 

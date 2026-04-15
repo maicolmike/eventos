@@ -7,4 +7,5 @@ urlpatterns = [
     #agregadas por el usuario
     path('', views.index, name='index'),
     path('users/', include('users.urls')), # se agrega esta linea para que reconozca las urls de la app users
+    #path('eventos/', include('registrar_eventos.urls')),
 ]
