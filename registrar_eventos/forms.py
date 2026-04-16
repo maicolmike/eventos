@@ -1,5 +1,5 @@
 from django import forms
-from .models import Evento, Participante, Ganador, Presupuesto
+from .models import Evento, Participante, Premiacion, Presupuesto
 
 class EventoForm(forms.ModelForm):
     class Meta:
@@ -11,9 +11,9 @@ class ParticipanteForm(forms.ModelForm):
         model = Participante
         fields = '__all__'
 
-class GanadorForm(forms.ModelForm):
+class PremiacionForm(forms.ModelForm):
     class Meta:
-        model = Ganador
+        model = Premiacion
         fields = '__all__'
 
 class PresupuestoForm(forms.ModelForm):
