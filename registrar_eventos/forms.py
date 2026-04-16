@@ -4,7 +4,7 @@ from .models import Evento, Participante, Premiacion, Presupuesto
 
 # Definición de opciones para el campo de agencia
 AGENCIA = [
-    ('', 'Seleccionar'),
+    ('', ''),
     ('MOCOA', 'Mocoa'),
     ('PUERTO ASIS', 'Puerto Asis'),
     ('DORADA', 'Dorada'),
@@ -13,6 +13,23 @@ AGENCIA = [
     ('VILLA GARZON', 'Villa Garzon'),
     ('PUERTO LEGUIZAMO', 'Puerto Leguizamo'),
     ('SIBUNDOY', 'Sibundoy'),
+]
+
+# Definición de opciones para el campo de agencia
+TIPO_ACTIVIDAD = [
+    ('', ''),
+    ('BINGO FAMILIAR', 'Bingo familiar'),
+    ('BINGO NINOS', 'Bingo niños'),
+    ('CAPACITACION', 'Capacitación personal / directivos'),
+    ('CBES', 'CBES'),
+    ('COMETAS', 'Cometas'),
+    ('CURSO CBES', 'Curso CBES'),
+    ('CURSO COMPLEMENTARIO', 'Curso complementario'),
+    ('ENCUENTRO', 'Encuentro'),
+    ('MANUALIDADES', 'Manualidades'),
+    ('PIN_ICFES', 'Pin icfes'),
+    ('PROGRAMA RADIO', 'Programa radio'),
+    ('OTROS', 'Otros'),
 ]
 
 class EventoForm(forms.ModelForm):
@@ -27,30 +44,32 @@ class EventoForm(forms.ModelForm):
         ]
         
         labels = {
-            'nombre_actividad': 'Nombre de la Actividad',
-            'fecha_informe': 'Fecha del Informe',
-            'cupo_participantes': 'Cupo Total',
+            'nombre_actividad': 'Nombre de la actividad',
+            'fecha_informe': 'Fecha del informe',
+            'cupo_participantes': 'Cupo total',
+            'asociados_participantes': 'Número de asociados Participantes',
+            'acompanantes_participantes': 'Número de acompañantes participantes',
         }
 
         widgets = {
             # Aplicamos clases de Bootstrap 'form-control' para que se vea bien
             'agencia': forms.Select(attrs={'class': 'form-control', 'id': 'agencia'}, choices=AGENCIA),
-            'fecha_informe': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'tipo_actividad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Taller, Asamblea'}),
-            'nombre_actividad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del evento'}),
-            'fecha_actividad': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'lugar_actividad': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_informe': forms.DateInput(attrs={'class': 'form-control', 'id': 'fecha_informe', 'type': 'date'}),
+            'tipo_actividad': forms.Select(attrs={'class': 'form-control', 'id': 'tipo_actividad'}, choices=TIPO_ACTIVIDAD),
+            'nombre_actividad': forms.TextInput(attrs={'class': 'form-control',}),
+            'fecha_actividad': forms.DateInput(attrs={'class': 'form-control', 'id': 'fecha_actividad', 'type': 'date'}),
+            'lugar_actividad': forms.TextInput(attrs={'class': 'form-control',}),
             
             # Campos numéricos
-            'cupo_participantes': forms.NumberInput(attrs={'class': 'form-control'}),
-            'asociados_participantes': forms.NumberInput(attrs={'class': 'form-control'}),
-            'acompanantes_participantes': forms.NumberInput(attrs={'class': 'form-control'}),
+            'cupo_participantes': forms.NumberInput(attrs={'class': 'form-control',}),
+            'asociados_participantes': forms.NumberInput(attrs={'class': 'form-control',}),
+            'acompanantes_participantes': forms.NumberInput(attrs={'class': 'form-control',}),
             
             # Áreas de texto (ajustamos la altura con 'rows')
-            'facilitador': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-            'entidad_aliada': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-            'programa_desarrollo': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-            'descripcion_ejecucion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'facilitador': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
+            'entidad_aliada': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
+            'programa_desarrollo': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
+            'descripcion_ejecucion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,}),
         }
 
 class ParticipanteForm(forms.ModelForm):

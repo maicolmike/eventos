@@ -2,15 +2,23 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/forms.css' %}">
-<div class="container mt-5">
 
-{% include 'inicio/messages.html' %}
+{% if user.is_superuser %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/botonRegister.css' %}">
+
+<div class="container mt-5">
+    {% include 'inicio/messages.html' %}
+    <h4 class="mb-4"><b>Crear Evento</b></h4>
     <form class="form-create" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Guardar</button>
+    <button type="submit" class="btn btn-dark register-button">Guardar</button>
     </form>
 </div>
+{% else %}
 
+{% include 'inicio/accesoRestringido.html' %}
+
+{% endif %}
 {% endblock %}

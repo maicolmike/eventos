@@ -13,10 +13,10 @@ class Evento(models.Model):
     asociados_participantes = models.IntegerField()
     acompanantes_participantes = models.IntegerField()
 
-    facilitador = models.TextField(blank=True)
-    entidad_aliada = models.TextField(blank=True)
-    programa_desarrollo = models.TextField(blank=True)
-    descripcion_ejecucion = models.TextField(blank=True)
+    facilitador = models.TextField()
+    entidad_aliada = models.TextField()
+    programa_desarrollo = models.TextField()
+    descripcion_ejecucion = models.TextField()
 
     def __str__(self):
         return self.nombre_actividad

@@ -11,9 +11,9 @@ def crear_evento(request):
     if form.is_valid():
         form.save()
         return redirect('listar_eventos')
-    return render(request, 'registrar_eventos/crear_evento.html', {'form': form})
+    return render(request, 'registrar_eventos/crear_evento.html', {'form': form ,'title': "Crear evento",})
 
 
 def listar_eventos(request):
     eventos = Evento.objects.all()
-    return render(request, 'registrar_eventos/listar_eventos.html', {'eventos': eventos})
+    return render(request, 'registrar_eventos/listar_eventos.html', {'eventos': eventos, 'title': "Listar eventos",})
