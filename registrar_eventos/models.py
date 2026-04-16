@@ -1,26 +1,12 @@
 from django.db import models
 
 # Create your models here.
-
-
-# 1. Define la lista AQUÍ afuera para que todos los modelos la vean
-AGENCIAS = [
-    ('mocoa', 'Mocoa'),
-    ('sibundoy', 'Sibundoy'),
-    ('puerto_asis', 'Puerto Asis'),
-    ('hormiga', 'Hormiga'),
-    ('orito', 'Orito'),
-    ('leguizamo', 'Leguizamo'),
-    ('dorada', 'Dorada'),
-    ('villagarzon', 'Villagarzon'),
-]
-
 class Evento(models.Model):
-    agencia = models.CharField(max_length=50, choices=AGENCIAS)
-    fecha_informe = models.DateTimeField()
+    agencia = models.CharField(max_length=100)
+    fecha_informe = models.DateField()
     tipo_actividad = models.CharField(max_length=100)
     nombre_actividad = models.TextField()
-    fecha_actividad = models.DateTimeField()
+    fecha_actividad = models.DateField()
     lugar_actividad = models.CharField(max_length=255)
 
     cupo_participantes = models.IntegerField()
@@ -47,7 +33,7 @@ class Participante(models.Model):
     nombres = models.CharField(max_length=255)
     apellidos = models.CharField(max_length=255)
     identificacion = models.CharField(max_length=50)
-    agencia = models.CharField(max_length=50, choices=AGENCIAS)
+    agencia = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
@@ -82,7 +68,7 @@ class Premiacion(models.Model):
     nombres = models.CharField(max_length=255)
     apellidos = models.CharField(max_length=255)
     identificacion = models.CharField(max_length=50)
-    agencia = models.CharField(max_length=50, choices=AGENCIAS)
+    agencia = models.CharField(max_length=100)
     categoria = models.CharField(max_length=20, choices=CATEGORIAS)
     puesto_numero = models.IntegerField()
     valor_premio = models.DecimalField(max_digits=12, decimal_places=2)

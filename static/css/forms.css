@@ -1,5 +1,5 @@
 /* Estilos para los inputs de tipo texto, contraseña, email, checkbox y file dentro de la clase form-create */
-.form-create input[type="text"], input[type="password"], input[type="email"], input[type="checkbox"], input[type="file"] {
+.form-create input[type="text"], input[type="password"], input[type="email"], input[type="checkbox"], input[type="file"],input[type="number"],input[type="date"] {
   margin-bottom: 20px;  /* Espacio inferior entre el input y el siguiente elemento, como un botón */
   font-size: 16px;      /* Tamaño de la letra dentro del input */
   max-width: 330px;     /* Ancho máximo del input */
