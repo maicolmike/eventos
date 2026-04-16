@@ -66,9 +66,9 @@ class EventoForm(forms.ModelForm):
             'acompanantes_participantes': forms.NumberInput(attrs={'class': 'form-control',}),
             
             # Áreas de texto (ajustamos la altura con 'rows')
-            'facilitador': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
-            'entidad_aliada': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
-            'programa_desarrollo': forms.Textarea(attrs={'class': 'form-control', 'rows': 2,}),
+            'facilitador': forms.TextInput(attrs={'class': 'form-control',}),
+            'entidad_aliada': forms.TextInput(attrs={'class': 'form-control',}),
+            'programa_desarrollo': forms.TextInput(attrs={'class': 'form-control',}),
             'descripcion_ejecucion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,}),
         }
 
