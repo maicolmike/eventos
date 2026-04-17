@@ -36,3 +36,14 @@ def crear_participantes(request):
         messages.success(request, 'Participante creado')
         return redirect('crear_participantes')
     return render(request, 'registrar_eventos/crear_participantes.html', {'form': form ,'title': "Crear participante",})
+
+# detalle evento
+@login_required(login_url='login')
+def detalle_evento(request, evento_id):
+    # Buscamos el evento o devolvemos un error 404 si no existe
+    evento = get_object_or_404(Evento, id=evento_id)
+    
+    return render(request, 'registrar_eventos/detalle_evento.html', {
+        'evento': evento,
+        'title': f"Detalle - {evento.nombre_actividad}"
+    })
