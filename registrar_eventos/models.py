@@ -8,7 +8,7 @@ class Participante(models.Model):
 
     nombres = models.CharField(max_length=255)
     apellidos = models.CharField(max_length=255)
-    identificacion = models.CharField(max_length=50)
+    identificacion = models.CharField(max_length=50,unique=True)
     agencia = models.CharField(max_length=100)
 
     def __str__(self):

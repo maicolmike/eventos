@@ -11,11 +11,15 @@ from django.contrib import messages
 @login_required(login_url='login')
 def crear_evento(request):
     form = EventoForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Evento creado')
-        return redirect('listar_eventos')
-    return render(request, 'registrar_eventos/crear_evento.html', {'form': form ,'title': "Crear evento",})
+    if request.method == 'POST':
+        if form.is_valid():
+            # Al llamar a save() directamente, Django guarda el Evento 
+            # Y las relaciones ManyToMany (colaboradores/directivos) automáticamente.
+            form.save() 
+            messages.success(request, 'Evento creado')
+            return redirect('listar_eventos')
+    
+    return render(request, 'registrar_eventos/crear_evento.html', {'form': form, 'title': "Crear evento"})
 
 #listar eventos
 @login_required(login_url='login')

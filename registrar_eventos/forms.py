@@ -47,7 +47,7 @@ class EventoForm(forms.ModelForm):
             'agencia', 'fecha_informe', 'tipo_actividad', 'nombre_actividad', 
             'fecha_actividad', 'lugar_actividad', 'cupo_participantes', 
             'asociados_participantes', 'acompanantes_participantes',
-            'facilitador', 'entidad_aliada', 'programa_desarrollo', 'descripcion_ejecucion'
+            'facilitador', 'entidad_aliada', 'programa_desarrollo', 'descripcion_ejecucion','colaboradores', 'directivos'
         ]
         
         labels = {
@@ -78,16 +78,16 @@ class EventoForm(forms.ModelForm):
             'programa_desarrollo': forms.TextInput(attrs={'class': 'form-control',}),
             'descripcion_ejecucion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,}),
             
-            # Para los campos de relaciones ManyToMany, usaremos SelectMultiple
-            'colaboradores': forms.SelectMultiple(attrs={'class': 'form-control'}),
-            'directivos': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            # 2. Definimos los SelectMultiple para Select2
+            'colaboradores': forms.SelectMultiple(attrs={'class': 'form-control select2'}),
+            'directivos': forms.SelectMultiple(attrs={'class': 'form-control select2'}),
         }
-        # Excluimos los campos de relaciones ManyToMany para manejarlos manualmente en la vista
-        def __init__(self, *args, **kwargs):
-            super(EventoForm, self).__init__(*args, **kwargs)
-            # Filtramos los participantes para que solo aparezcan según su tipo
-            self.fields['colaboradores'].queryset = Participante.objects.filter(tipo_participante='colaborador')
-            self.fields['directivos'].queryset = Participante.objects.filter(tipo_participante='directivo')
+    # Excluimos los campos de relaciones ManyToMany para manejarlos manualmente en la vista
+    def __init__(self, *args, **kwargs):
+        super(EventoForm, self).__init__(*args, **kwargs)
+        # Filtramos para que en cada cuadro solo salgan los que corresponden
+        self.fields['colaboradores'].queryset = Participante.objects.filter(tipo_participante='colaborador')
+        self.fields['directivos'].queryset = Participante.objects.filter(tipo_participante='directivo')
 
 class ParticipanteForm(forms.ModelForm):
     class Meta:
@@ -100,6 +100,19 @@ class ParticipanteForm(forms.ModelForm):
             'identificacion': forms.TextInput(attrs={'class': 'form-control',}),
             'agencia': forms.Select(attrs={'class': 'form-control', 'id': 'agencia'}, choices=AGENCIA),
         }
+        
+    # Método para validar un campo específico
+    def clean_identificacion(self):
+        # Obtenemos el dato que el usuario escribió
+        identificacion = self.cleaned_data.get('identificacion')
+        
+        # Verificamos si ya existe en la base de datos
+        # self.instance.pk nos permite excluir al propio registro si estamos editando
+        if Participante.objects.filter(identificacion=identificacion).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Ya existe un participante registrado con esta identificación.")
+        
+        # Siempre debes retornar el valor limpio
+        return identificacion
 
 class PremiacionForm(forms.ModelForm):
     class Meta:
