@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="{% static 'css/acciones.css' %}">
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
 
     {% include 'inicio/messages.html' %}
 
@@ -24,6 +24,13 @@
                   <th>Tipo</th>
                   <th>Lugar actividad</th>
                   <th>Nombre de la Actividad</th>
+                  <th>Cupo total</th>
+                  <th>Numero de asociados</th>
+                  <th>Numero de acompañantes</th>
+                  <th>Facilitador</th>
+                  <th>Entidad aliada</th>
+                  <th>Programa de desarrollo</th>
+                  <th>Descripcion de la ejecucion</th>
                   <th>Participantes</th>
                   <th>Acciones</th>
                 </tr>
@@ -39,6 +46,13 @@
                   <td class="text-center">{{ e.tipo_actividad }}</td>
                   <td class="text-center">{{ e.lugar_actividad }}</td>
                   <td><strong>{{ e.nombre_actividad }}</strong></td>
+                  <td>{{ e.cupo_participantes }}</td>
+                  <td>{{ e.asociados_participantes }}</td>
+                  <td>{{ e.acompanantes_participantes }}</td>
+                  <td>{{ e.facilitador }}</td>
+                  <td>{{ e.entidad_aliada }}</td>
+                  <td>{{ e.programa_desarrollo }}</td>
+                  <td>{{ e.descripcion_ejecucion|truncatechars:50 }}</td>
                   <td>
                     <small class="d-block text-muted">
                       <i class="fa-solid fa-users me-1 text-primary"></i>Colab: {{ e.colaboradores.count }}

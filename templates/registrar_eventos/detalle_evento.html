@@ -3,25 +3,29 @@
 
 {% block content %}
 <div class="container mt-5 mb-5">
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-dark"><i class="fas fa-info-circle text-primary"></i> Detalle del Evento</h2>
-        <a href="{% url 'listar_eventos' %}" class="btn btn-outline-secondary">
+        <h2 class="text-dark">
+            <i class="fas fa-info-circle text-primary"></i> Detalle del Evento
+        </h2>
+        <a href="{% url 'listar_eventos' %}" class="btn btn-success text-white btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Volver al listado
         </a>
     </div>
 
     <div class="row">
         <div class="col-lg-4">
+            
             <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Información General</h5>
                 </div>
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
+                <div class="card-body p-0"> <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Agencia:</strong> {{ evento.agencia }}</li>
-                        <li class="list-group-item"><strong>Fecha:</strong> {{ evento.fecha_actividad|date:"d F, Y" }}</li>
+                        <li class="list-group-item"><strong>Fecha informe:</strong> {{ evento.fecha_informe|date:"d F, Y" }}</li>
+                        <li class="list-group-item"><strong>Fecha actividad:</strong> {{ evento.fecha_actividad|date:"d F, Y" }}</li>
                         <li class="list-group-item"><strong>Lugar:</strong> {{ evento.lugar_actividad }}</li>
-                        <li class="list-group-item"><strong>Tipo:</strong> <span class="badge bg-info text-dark">{{ evento.tipo_actividad }}</span></li>
+                        <li class="list-group-item"><strong>Tipo:</strong> {{ evento.tipo_actividad }}</li>
                     </ul>
                 </div>
             </div>
@@ -32,13 +36,17 @@
                 </div>
                 <div class="card-body text-center">
                     <div class="row">
-                        <div class="col-6 mb-3">
-                            <h3 class="mb-0">{{ evento.cupo_participantes }}</h3>
-                            <small class="text-muted">Cupo Total</small>
+                        <div class="col-4">
+                            <h3 class="mb-0 text-primary">{{ evento.cupo_participantes }}</h3>
+                            <small class="text-muted">Total</small>
                         </div>
-                        <div class="col-6 mb-3">
-                            <h3 class="mb-0">{{ evento.asociados_participantes }}</h3>
+                        <div class="col-4 border-start border-end">
+                            <h3 class="mb-0 text-success">{{ evento.asociados_participantes }}</h3>
                             <small class="text-muted">Asociados</small>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="mb-0 text-info">{{ evento.acompanantes_participantes }}</h3>
+                            <small class="text-muted">Acompañantes</small>
                         </div>
                     </div>
                 </div>
@@ -46,52 +54,61 @@
         </div>
 
         <div class="col-lg-8">
+            
             <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Nombre de la actividad</h5>
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title text-primary">{{ evento.nombre_actividad }}</h4>
+                    <h4 class="card-title text-dark">{{ evento.nombre_actividad }}</h4>
                     <hr>
-                    <p class="card-text"><strong>Descripción de la ejecución:</strong></p>
-                    <p class="text-muted" style="white-space: pre-wrap;">{{ evento.descripcion_ejecucion }}</p>
-                    <p><strong>Facilitador:</strong> {{ evento.facilitador }}</p>
-                    <p><strong>Entidad Aliada:</strong> {{ evento.entidad_aliada }}</p>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Facilitador:</strong> {{ evento.facilitador }}</p>
+                            <p class="mb-1"><strong>Entidad Aliada:</strong> {{ evento.entidad_aliada }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Programa:</strong> {{ evento.programa_desarrollo }}</p>
+                        </div>
+                    </div>
+                    <p class="fw-bold mb-1">Descripción de la ejecución:</p>
+                    <p class="text-muted bg-light p-3 rounded" style="white-space: pre-wrap;">{{ evento.descripcion_ejecucion }}</p>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
-                    <div class="card shadow-sm border-0">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
                         <div class="card-header bg-success text-white">
                             <h6 class="mb-0"><i class="fas fa-users"></i> Colaboradores ({{ evento.colaboradores.count }})</h6>
                         </div>
-                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                        <div class="card-body overflow-auto" style="max-height: 300px;">
                             <ul class="list-group list-group-flush small">
                                 {% for c in evento.colaboradores.all %}
-                                <li class="list-group-item">{{ c.nombres }} {{ c.apellidos }}</li>
+                                    <li class="list-group-item border-0 ps-0"><i class="fas fa-check-circle text-success me-2"></i>{{ c.nombres }} {{ c.apellidos }}</li>
                                 {% empty %}
-                                <li class="list-group-item text-muted">Sin colaboradores</li>
+                                    <li class="list-group-item text-muted italic">Sin colaboradores asignados</li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card shadow-sm border-0">
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
                         <div class="card-header bg-danger text-white">
                             <h6 class="mb-0"><i class="fas fa-user-tie"></i> Directivos ({{ evento.directivos.count }})</h6>
                         </div>
-                        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                        <div class="card-body overflow-auto" style="max-height: 300px;">
                             <ul class="list-group list-group-flush small">
                                 {% for d in evento.directivos.all %}
-                                <li class="list-group-item">{{ d.nombres }} {{ d.apellidos }}</li>
+                                    <li class="list-group-item border-0 ps-0"><i class="fas fa-star text-danger me-2"></i>{{ d.nombres }} {{ d.apellidos }}</li>
                                 {% empty %}
-                                <li class="list-group-item text-muted">Sin directivos</li>
+                                    <li class="list-group-item text-muted italic">Sin directivos asignados</li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+            </div> </div> </div> </div>
 {% endblock %}

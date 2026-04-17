@@ -22,21 +22,24 @@
       <!-- MENÚ -->
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'crear_evento' %}"><i class="fas fa-calendar-plus text-danger"></i> Crear evento</a>
+          <a class="nav-link" href="{% url 'crear_evento' %}"><i class="fas fa-calendar-plus text-warning"></i> Crear evento</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'listar_eventos' %}"><i class="fas fa-calendar-plus text-danger"></i> Listar eventos</a>
+          <a class="nav-link" href="{% url 'listar_eventos' %}"><i class="fa-solid fa-table-list text-primary"></i> Listar eventos</a>
         </li>
 
         {% if user.is_superuser %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'crear_participantes' %}"><i class="fas fa-user-plus text-warning"></i> Crear participantes</a>
+          <a class="nav-link" href="{% url 'crear_participantes' %}"><i class="fa-solid fa-person-circle-plus text-warning"></i> Crear participantes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'crear_participantes' %}"><i class="fa-solid fa-people-group text-primary"></i> Listar participantes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus text-warning"></i> Crear usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users text-info text-info"></i> Listar usuarios</a>
+          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users text-primary"></i> Listar usuarios</a>
         </li>
         {% endif %}
       </ul>
