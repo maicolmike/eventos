@@ -1,6 +1,19 @@
 from django.db import models
 
 # Create your models here.
+
+class Participante(models.Model):
+    #evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='participantes')
+    tipo_participante = models.CharField(max_length=100)
+
+    nombres = models.CharField(max_length=255)
+    apellidos = models.CharField(max_length=255)
+    identificacion = models.CharField(max_length=50)
+    agencia = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.nombres} {self.apellidos}"
+
 class Evento(models.Model):
     agencia = models.CharField(max_length=100)
     fecha_informe = models.DateField()
@@ -18,25 +31,22 @@ class Evento(models.Model):
     programa_desarrollo = models.TextField()
     descripcion_ejecucion = models.TextField()
 
+    # Relación para Colaboradores
+    colaboradores = models.ManyToManyField(
+        Participante, 
+        related_name='eventos_colaborador', 
+        blank=True
+    )
+    
+    # Relación para Directivos
+    directivos = models.ManyToManyField(
+        Participante, 
+        related_name='eventos_directivo', 
+        blank=True
+    )
+
     def __str__(self):
         return self.nombre_actividad
-
-class Participante(models.Model):
-    TIPO_PARTICIPANTE = [
-        ('colaborador', 'Colaborador'),
-        ('directivo', 'Directivo'),
-    ]
-
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='participantes')
-    tipo_participante = models.CharField(max_length=20, choices=TIPO_PARTICIPANTE)
-
-    nombres = models.CharField(max_length=255)
-    apellidos = models.CharField(max_length=255)
-    identificacion = models.CharField(max_length=50)
-    agencia = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.nombres} {self.apellidos}"
 
 class Presupuesto(models.Model):
     TIPOS = [

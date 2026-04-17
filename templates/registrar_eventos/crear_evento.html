@@ -97,6 +97,24 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label font-weight-bold text-primary">
+                    <i class="fas fa-users"></i> Seleccionar Colaboradores
+                </label>
+                {{ form.colaboradores }}
+                <small class="text-muted">Mantén presionada la tecla Ctrl para seleccionar varios.</small>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label font-weight-bold text-danger">
+                    <i class="fas fa-user-tie"></i> Seleccionar Directivos
+                </label>
+                {{ form.directivos }}
+                <small class="text-muted">Mantén presionada la tecla Ctrl para seleccionar varios.</small>
+            </div>
+        </div>
+
         <!-- 🔹 BOTÓN -->
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-success px-5 register-button w-25">

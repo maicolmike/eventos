@@ -32,6 +32,13 @@ TIPO_ACTIVIDAD = [
     ('OTROS', 'Otros'),
 ]
 
+# Definición de opciones para el campo de tipo de participante
+TIPO_PARTICIPANTE = [
+        ('', ''),
+        ('colaborador', 'Colaborador'),
+        ('directivo', 'Directivo'),
+    ]
+
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
@@ -70,12 +77,29 @@ class EventoForm(forms.ModelForm):
             'entidad_aliada': forms.TextInput(attrs={'class': 'form-control',}),
             'programa_desarrollo': forms.TextInput(attrs={'class': 'form-control',}),
             'descripcion_ejecucion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3,}),
+            
+            # Para los campos de relaciones ManyToMany, usaremos SelectMultiple
+            'colaboradores': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'directivos': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
+        # Excluimos los campos de relaciones ManyToMany para manejarlos manualmente en la vista
+        def __init__(self, *args, **kwargs):
+            super(EventoForm, self).__init__(*args, **kwargs)
+            # Filtramos los participantes para que solo aparezcan según su tipo
+            self.fields['colaboradores'].queryset = Participante.objects.filter(tipo_participante='colaborador')
+            self.fields['directivos'].queryset = Participante.objects.filter(tipo_participante='directivo')
 
 class ParticipanteForm(forms.ModelForm):
     class Meta:
         model = Participante
         fields = '__all__'
+        widgets = {
+            'tipo_participante': forms.Select(attrs={'class': 'form-control', 'id': 'tipo_participante'}, choices=TIPO_PARTICIPANTE),
+            'nombres': forms.TextInput(attrs={'class': 'form-control',}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control',}),
+            'identificacion': forms.TextInput(attrs={'class': 'form-control',}),
+            'agencia': forms.Select(attrs={'class': 'form-control', 'id': 'agencia'}, choices=AGENCIA),
+        }
 
 class PremiacionForm(forms.ModelForm):
     class Meta:
