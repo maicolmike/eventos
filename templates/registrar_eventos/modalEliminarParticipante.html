@@ -5,6 +5,7 @@
 
       <form id="formEliminar" data-url="{% url 'delete_participante_ajax' %}">
         {% csrf_token %}
+
         <input type="hidden" id="delete_id" name="id">
 
         <div class="modal-header bg-dark text-white">

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formEliminar");
     const mensaje = document.getElementById("mensajeEliminar");
 
-    // CUANDO DAN CLICK EN ELIMINAR
+    // 🔹 CLICK EN ELIMINAR
     document.querySelectorAll(".btn-eliminar").forEach(btn => {
         btn.addEventListener("click", () => {
 
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ENVÍO AJAX
+    // 🔹 ENVIAR AJAX
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -32,38 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // 🔥 VALIDAR RESPUESTA HTTP
             if (!response.ok) {
                 throw new Error("Error HTTP: " + response.status);
             }
 
-            // 🔥 VALIDAR QUE SEA JSON
-            const text = await response.text();
-
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (e) {
-                console.error("Respuesta no es JSON:", text);
-                throw new Error("Respuesta inválida del servidor");
-            }
+            const data = await response.json();
 
             if (data.status === "success") {
                 mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
 
                 setTimeout(() => {
                     bootstrap.Modal.getInstance(document.getElementById("modalEliminarParticipante")).hide();
-
-                    // 🔥 OPCIONAL: eliminar sin recargar
                     location.reload();
-                }, 1000);
+                }, 800);
 
             } else {
                 mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
             }
 
         } catch (error) {
-            console.error("ERROR REAL:", error);
+            console.error("🔥 ERROR:", error);
             mensaje.innerHTML = `<div class="alert alert-danger">Error del servidor</div>`;
         }
     });

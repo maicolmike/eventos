@@ -53,7 +53,7 @@
                     data-apellidos="{{ participantes.apellidos }}"
                     data-identificacion="{{ participantes.identificacion }}" 
                     data-agencia="{{ participantes.agencia }}">
-                    ✏️ Editar participante
+                    <i class="fa-solid fa-pen-to-square text-primary me-2"></i>Editar participante
                   </a>
                 </li>
 
@@ -61,12 +61,13 @@
                 <li>
                   <a class="dropdown-item btn-eliminar text-danger" href="#" 
                   data-bs-toggle="modal" 
-                  data-bs-target="#modalEliminar"
+                  data-bs-target="#modalEliminarParticipante"
                   data-id="{{ participantes.id }}" 
-                  data-username="{{ participantes.username }}">
+                  data-nombres="{{ participantes.nombres }}">
                   <i class="fa-solid fa-trash-can me-2"></i>Eliminar Usuario
                   </a>
                 </li>
+
               </ul>
             </div>
           </td>
@@ -78,7 +79,7 @@
 </div>
 
 {% include 'registrar_eventos/modalEditarParticipante.html' %}
-{% include 'users/modalEliminar.html' %}
+{% include 'registrar_eventos/modalEliminarParticipante.html' %}
 
 <script src="{% static 'js/ordenarUsuarios.js' %}"></script>
 

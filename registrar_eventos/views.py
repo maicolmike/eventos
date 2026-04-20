@@ -117,3 +117,33 @@ def editar_participante_ajax(request):
             'status': 'error',
             'message': str(e)
         })
+
+#eliminar participantes modal
+@login_required(login_url='login')
+def delete_participante_ajax(request):
+    try:
+        participante_id = request.POST.get('id')
+
+        if not participante_id:
+            return JsonResponse({'status': 'error', 'message': 'No llegó el ID'})
+
+        participante = Participante.objects.get(id=participante_id)
+        participante.delete()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Participante eliminado correctamente'
+        })
+
+    except Participante.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'El participante no existe'
+        })
+
+    except Exception as e:
+        print("🔥 ERROR ELIMINAR:", e)
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        })
