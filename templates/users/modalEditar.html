@@ -12,13 +12,17 @@
         </div>
 
         <div class="modal-body">
+          <label for="edit_identificacion">Identificación</label>
           <input class="form-control mb-2" id="edit_identificacion" name="identificacion" placeholder="Identificación" required>
+          <label for="edit_nombres">Nombres</label>
           <input class="form-control mb-2" id="edit_nombres" name="nombres" placeholder="Nombres" required>
+          <label for="edit_username">Usuario</label>
           <input class="form-control mb-2" id="edit_username" name="username" placeholder="Usuario" required>
+          <label for="edit_email">Email</label>
           <input class="form-control mb-2" id="edit_email" name="userEmail" placeholder="Email" required>
 
+          <label for="edit_agencia">Agencia</label>
           <select class="form-control mb-2" id="edit_agencia" name="agencia" required>
-            <option value="">Seleccione una agencia</option>
             <option value="MOCOA">Mocoa</option>
             <option value="PUERTO ASIS">Puerto Asís</option>
             <option value="DORADA">Dorada</option>
@@ -29,14 +33,14 @@
             <option value="SIBUNDOY">Sibundoy</option>
           </select>
 
+          <label for="edit_superuser">Tipo de usuario</label>
           <select class="form-control mb-2" id="edit_superuser" name="tipousuario" required>
-            <option value="">Seleccione un tipo de usuario</option>
             <option value="1">Administrador</option>
             <option value="0">Cliente</option>
           </select>
-
+          
+          <label for="edit_active">Estado</label>
           <select class="form-control mb-2" id="edit_active" name="estado" required>
-            <option value="">Seleccione un estado</option>
             <option value="1">Activo</option>
             <option value="0">Inactivo</option>
           </select>
