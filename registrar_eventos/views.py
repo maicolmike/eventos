@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import redirect, get_object_or_404
-from .models import Evento
+from .models import Evento, Participante, Presupuesto
 from .forms import EventoForm,ParticipanteForm,PresupuestoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -79,3 +79,44 @@ def detalle_evento(request, evento_id):
         'presu_e': presu_ejecutado,
         'title': f"Detalle - {evento.nombre_actividad}"
     })
+
+#listar participantes
+@login_required(login_url='login')
+def listar_participantes(request):
+    participantes = Participante.objects.all()
+    return render(request, 'registrar_eventos/listar_participantes.html', {'lista_participantes': participantes, 'title': "Listar participantes",})
+
+#editar participantes modal
+@login_required(login_url='login')
+def editar_participante_ajax(request):
+    try:
+        participante_id = request.POST.get('id')
+
+        # 🔹 Buscar participante
+        participante = Participante.objects.get(id=participante_id)
+
+        # 🔹 Actualizar campos
+        participante.tipo_participante = request.POST.get('tipo_participante')
+        participante.identificacion = request.POST.get('identificacion')
+        participante.nombres = request.POST.get('nombres')
+        participante.apellidos = request.POST.get('apellidos')
+        participante.agencia = request.POST.get('agencia')
+
+        participante.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Participante actualizado correctamente'
+        })
+
+    except Participante.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Participante no encontrado'
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        })
