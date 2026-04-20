@@ -62,8 +62,8 @@ class EventoForm(forms.ModelForm):
             'nombre_actividad': 'Nombre de la actividad',
             'fecha_informe': 'Fecha del informe',
             'cupo_participantes': 'Cupo total',
-            'asociados_participantes': 'Número de asociados Participantes',
-            'acompanantes_participantes': 'Número de acompañantes participantes',
+            'asociados_participantes': '#asociados participantes',
+            'acompanantes_participantes': '#acompañantes participantes',
         }
 
         widgets = {
