@@ -3,23 +3,51 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import redirect, get_object_or_404
 from .models import Evento
-from .forms import EventoForm,ParticipanteForm
+from .forms import EventoForm,ParticipanteForm,PresupuestoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 #crear evento
 @login_required(login_url='login')
 def crear_evento(request):
-    form = EventoForm(request.POST or None)
     if request.method == 'POST':
-        if form.is_valid():
-            # Al llamar a save() directamente, Django guarda el Evento 
-            # Y las relaciones ManyToMany (colaboradores/directivos) automáticamente.
-            form.save() 
-            messages.success(request, 'Evento creado')
+        # Instanciamos los 3 formularios con los datos del POST
+        form = EventoForm(request.POST)
+        # El prefix es fundamental para separar los datos en el request.POST
+        form_proyectado = PresupuestoForm(request.POST, prefix='proyectado')
+        form_ejecutado = PresupuestoForm(request.POST, prefix='ejecutado')
+
+        if form.is_valid() and form_proyectado.is_valid() and form_ejecutado.is_valid():
+            # 1. Guardamos el evento (esto incluye los ManyToMany de participantes)
+            evento = form.save()
+
+            # 2. Guardamos presupuesto Proyectado
+            presu_p = form_proyectado.save(commit=False)
+            presu_p.evento = evento
+            presu_p.tipo = 'proyectado'
+            presu_p.save()
+
+            # 3. Guardamos presupuesto Ejecutado
+            presu_e = form_ejecutado.save(commit=False)
+            presu_e.evento = evento
+            presu_e.tipo = 'ejecutado'
+            presu_e.save()
+
+            messages.success(request, 'Evento y presupuestos registrados correctamente')
             return redirect('listar_eventos')
-    
-    return render(request, 'registrar_eventos/crear_evento.html', {'form': form, 'title': "Crear evento"})
+    else:
+        # Formularios vacíos para la carga inicial (GET)
+        form = EventoForm()
+        form_proyectado = PresupuestoForm(prefix='proyectado')
+        form_ejecutado = PresupuestoForm(prefix='ejecutado')
+
+    context = {
+        'form': form,
+        'form_proyectado': form_proyectado,
+        'form_ejecutado': form_ejecutado,
+        'title': "Crear evento integral"
+    }
+    return render(request, 'registrar_eventos/crear_evento.html', context)
 
 #listar eventos
 @login_required(login_url='login')
@@ -40,10 +68,14 @@ def crear_participantes(request):
 # detalle evento
 @login_required(login_url='login')
 def detalle_evento(request, evento_id):
-    # Buscamos el evento o devolvemos un error 404 si no existe
     evento = get_object_or_404(Evento, id=evento_id)
+    # Extra: Obtenemos los presupuestos para mostrarlos en el detalle
+    presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
+    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
     
     return render(request, 'registrar_eventos/detalle_evento.html', {
         'evento': evento,
+        'presu_p': presu_proyectado,
+        'presu_e': presu_ejecutado,
         'title': f"Detalle - {evento.nombre_actividad}"
     })

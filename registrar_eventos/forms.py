@@ -114,12 +114,26 @@ class ParticipanteForm(forms.ModelForm):
         # Siempre debes retornar el valor limpio
         return identificacion
 
+class PresupuestoForm(forms.ModelForm):
+    class Meta:
+        model = Presupuesto
+        # Excluimos evento y tipo porque se llenan automáticamente en la vista
+        exclude = ['evento', 'tipo'] 
+        widgets = {
+            'refrigerio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'almuerzo': forms.NumberInput(attrs={'class': 'form-control'}),
+            'publicidad': forms.NumberInput(attrs={'class': 'form-control'}),
+            'sonido': forms.NumberInput(attrs={'class': 'form-control'}),
+            'video': forms.NumberInput(attrs={'class': 'form-control'}),
+            'premiacion': forms.NumberInput(attrs={'class': 'form-control'}),
+            'imprevistos': forms.NumberInput(attrs={'class': 'form-control'}),
+            'otros': forms.NumberInput(attrs={'class': 'form-control'}),
+            'valor_proyecto': forms.NumberInput(attrs={'class': 'form-control'}),
+            'total_presupuesto': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
 class PremiacionForm(forms.ModelForm):
     class Meta:
         model = Premiacion
         fields = '__all__'
 
-class PresupuestoForm(forms.ModelForm):
-    class Meta:
-        model = Presupuesto
-        fields = '__all__'
