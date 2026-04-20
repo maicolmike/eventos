@@ -6,6 +6,7 @@ from .models import Evento, Participante, Presupuesto
 from .forms import EventoForm,ParticipanteForm,PresupuestoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 
 #crear evento
 @login_required(login_url='login')
@@ -92,10 +93,11 @@ def editar_participante_ajax(request):
     try:
         participante_id = request.POST.get('id')
 
-        # 🔹 Buscar participante
+        if not participante_id:
+            return JsonResponse({'status': 'error', 'message': 'No llegó el ID'})
+
         participante = Participante.objects.get(id=participante_id)
 
-        # 🔹 Actualizar campos
         participante.tipo_participante = request.POST.get('tipo_participante')
         participante.identificacion = request.POST.get('identificacion')
         participante.nombres = request.POST.get('nombres')
@@ -109,13 +111,8 @@ def editar_participante_ajax(request):
             'message': 'Participante actualizado correctamente'
         })
 
-    except Participante.DoesNotExist:
-        return JsonResponse({
-            'status': 'error',
-            'message': 'Participante no encontrado'
-        })
-
     except Exception as e:
+        print("🔥 ERROR REAL:", e)  # 👈 IMPORTANTE
         return JsonResponse({
             'status': 'error',
             'message': str(e)

@@ -3,39 +3,30 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
-      <!-- 🔹 IMPORTANTE: cambia la URL a la correcta de participantes -->
       <form id="formEditarParticipante" data-url="{% url 'editar_participante_ajax' %}">
         {% csrf_token %}
 
-        <!-- ID oculto -->
         <input type="hidden" name="id" id="edit_id">
 
-        <!-- HEADER -->
         <div class="modal-header bg-dark text-white">
           <h5 class="modal-title">Editar participante</h5>
           <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"></button>
         </div>
 
-        <!-- BODY -->
         <div class="modal-body">
 
-          <!-- Tipo participante -->
           <select class="form-control mb-2" id="edit_tipo_participante" name="tipo_participante" required>
             <option value="">Seleccione tipo</option>
             <option value="colaborador">Colaborador</option>
             <option value="directivo">Directivo</option>
           </select>
 
-          <!-- Identificación -->
           <input class="form-control mb-2" id="edit_identificacion" name="identificacion" placeholder="Identificación" required>
 
-          <!-- Nombres -->
           <input class="form-control mb-2" id="edit_nombres" name="nombres" placeholder="Nombres" required>
 
-          <!-- Apellidos -->
           <input class="form-control mb-2" id="edit_apellidos" name="apellidos" placeholder="Apellidos" required>
 
-          <!-- Agencia -->
           <select class="form-control mb-2" id="edit_agencia" name="agencia" required>
             <option value="">Seleccione una agencia</option>
             <option value="MOCOA">Mocoa</option>
@@ -48,21 +39,19 @@
             <option value="SIBUNDOY">Sibundoy</option>
           </select>
 
-          <!-- Mensajes -->
           <div id="mensajeEditar"></div>
 
         </div>
 
-        <!-- FOOTER -->
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Guardar</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
         </div>
 
       </form>
+
     </div>
   </div>
 </div>
 
-<!-- en este codigo me trae la informacion del participante -->
 <script src="{% static 'js/modalEditarParticipante.js' %}"></script>

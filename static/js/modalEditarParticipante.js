@@ -1,52 +1,64 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-    // 🔹 Cuando dan clic en editar
+    const modal = document.getElementById("modalEditarParticipante");
+    const form = document.getElementById("formEditarParticipante");
+    const mensaje = document.getElementById("mensajeEditar");
+
+    // 🔹 CAMPOS REALES DEL MODELO
+    const campos = ["id", "tipo_participante", "identificacion", "nombres", "apellidos", "agencia"];
+
+    // 🔹 CLICK EN EDITAR
     document.querySelectorAll(".btn-editar").forEach(btn => {
-        btn.addEventListener("click", function () {
+        btn.addEventListener("click", () => {
 
-            document.getElementById("edit_id").value = this.dataset.id;
-            document.getElementById("edit_tipo_participante").value = this.dataset.tipo_participante;
-            document.getElementById("edit_identificacion").value = this.dataset.identificacion;
-            document.getElementById("edit_nombres").value = this.dataset.nombres;
-            document.getElementById("edit_apellidos").value = this.dataset.apellidos;
-            document.getElementById("edit_agencia").value = this.dataset.agencia;
+            campos.forEach(campo => {
+                const input = document.getElementById(`edit_${campo}`);
+                if (input) {
+                    input.value = btn.dataset[campo] || "";
+                }
+            });
+
+            mensaje.innerHTML = "";
         });
     });
 
-    // 🔹 Enviar formulario por AJAX
-    document.getElementById("formEditarParticipante").addEventListener("submit", function (e) {
+    // 🔹 ENVIAR FORMULARIO (AJAX)
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        let form = this;
-        let url = form.dataset.url;
-        let formData = new FormData(form);
+        mensaje.innerHTML = `<div class="alert alert-info">Guardando...</div>`;
 
-        fetch(url, {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRFToken": form.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            let mensaje = document.getElementById("mensajeEditar");
+        try {
+            const formData = new FormData(form);
+            const url = form.getAttribute("data-url");
+
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
+
+            const data = await response.json();
 
             if (data.status === "success") {
                 mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
 
-                // 🔥 Recargar tabla automáticamente
                 setTimeout(() => {
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    modalInstance.hide();
                     location.reload();
-                }, 1000);
+                }, 800);
 
             } else {
                 mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
             }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
+
+        } catch (error) {
+            console.error(error);
+            mensaje.innerHTML = `<div class="alert alert-danger">Error del servidor</div>`;
+        }
     });
 
 });
