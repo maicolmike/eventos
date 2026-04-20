@@ -9,4 +9,5 @@ urlpatterns = [
     path('detalle/<int:evento_id>/', views.detalle_evento, name='detalle_evento'),
     path('editar_participante/', views.editar_participante_ajax, name='editar_participante_ajax'),
     path('delete_participante/', views.delete_participante_ajax, name='delete_participante_ajax'),
+    path('evento/<int:evento_id>/premiacion/', views.gestionar_premiacion, name='gestionar_premiacion'),
 ]

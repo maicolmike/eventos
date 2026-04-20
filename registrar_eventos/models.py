@@ -69,17 +69,12 @@ class Presupuesto(models.Model):
     total_presupuesto = models.DecimalField(max_digits=12, decimal_places=2)
 
 class Premiacion(models.Model):
-    CATEGORIAS = [
-        ('infantil', 'Infantil'),
-        ('juvenil', 'Juvenil'),
-        ('libre', 'Libre'),
-    ]
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='premiaciones')
     nombres = models.CharField(max_length=255)
     apellidos = models.CharField(max_length=255)
     identificacion = models.CharField(max_length=50)
     agencia = models.CharField(max_length=100)
-    categoria = models.CharField(max_length=20, choices=CATEGORIAS)
+    categoria = models.CharField(max_length=100)
     puesto_numero = models.IntegerField()
     valor_premio = models.DecimalField(max_digits=12, decimal_places=2)
 

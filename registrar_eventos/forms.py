@@ -39,6 +39,14 @@ TIPO_PARTICIPANTE = [
         ('directivo', 'Directivo'),
     ]
 
+# Definición de opciones para el campo de categoría en premiación
+CATEGORIAS = [
+        ('', ''),
+        ('infantil', 'Infantil'),
+        ('juvenil', 'Juvenil'),
+        ('libre', 'Libre'),
+    ]
+
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
@@ -117,8 +125,19 @@ class ParticipanteForm(forms.ModelForm):
 class PresupuestoForm(forms.ModelForm):
     class Meta:
         model = Presupuesto
-        # Excluimos evento y tipo porque se llenan automáticamente en la vista
-        exclude = ['evento', 'tipo'] 
+        exclude = ['evento', 'tipo'] # Excluimos evento y tipo porque se llenan automáticamente en la vista
+        labels = {
+            'refrigerio': 'Valor refrigerio',
+            'almuerzo': 'Valor almuerzo',
+            'publicidad': 'Valor publicidad',
+            'sonido': 'Valor sonido',
+            'video': 'Valor video',
+            'premiacion': 'Valor premiación',
+            'imprevistos': 'Valor imprevistos',
+            'otros': 'Valor otros',
+            'valor_proyecto': 'Valor total del proyecto',
+            'total_presupuesto': 'Total del presupuesto',
+        }
         widgets = {
             'refrigerio': forms.NumberInput(attrs={'class': 'form-control'}),
             'almuerzo': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -135,5 +154,14 @@ class PresupuestoForm(forms.ModelForm):
 class PremiacionForm(forms.ModelForm):
     class Meta:
         model = Premiacion
-        fields = '__all__'
+        exclude = ['evento']  # 👈 🔥 SOLUCIÓN CLAVE
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            'identificacion': forms.TextInput(attrs={'class': 'form-control'}),
+            'agencia': forms.Select(attrs={'class': 'form-control'}, choices=AGENCIA),
+            'categoria': forms.Select(attrs={'class': 'form-control'}, choices=CATEGORIAS),
+            'puesto_numero': forms.NumberInput(attrs={'class': 'form-control'}),
+            'valor_premio': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
 

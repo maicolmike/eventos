@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import redirect, get_object_or_404
-from .models import Evento, Participante, Presupuesto
-from .forms import EventoForm,ParticipanteForm,PresupuestoForm
+from .models import Evento, Participante, Presupuesto, Premiacion
+from .forms import EventoForm,ParticipanteForm,PresupuestoForm,PremiacionForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
@@ -147,3 +147,45 @@ def delete_participante_ajax(request):
             'status': 'error',
             'message': str(e)
         })
+
+# ================================
+# PREMIACIONES POR EVENTO
+# ================================
+@login_required(login_url='login')
+def gestionar_premiacion(request, evento_id):
+    evento = get_object_or_404(Evento, id=evento_id)
+
+    form = PremiacionForm(request.POST or None)
+
+    if request.method == 'POST':
+        print("POST DATA:", request.POST)  # 👈 DEBUG
+
+    if form.is_valid():
+        premiacion = form.save(commit=False)
+        premiacion.evento = evento
+        premiacion.save()
+        print("✅ GUARDÓ")
+        
+        messages.success(request, 'Premio agregado correctamente')
+        return redirect('gestionar_premiacion', evento_id=evento.id)
+    else:
+        print("❌ ERRORES:", form.errors)  # 👈 CLAVE
+
+    # Agrupar por categoría (🔥 importante)
+    premiaciones = evento.premiaciones.all().order_by('categoria', 'puesto_numero')
+
+    categorias = {
+        'infantil': [],
+        'juvenil': [],
+        'libre': []
+    }
+
+    for p in premiaciones:
+        categorias[p.categoria].append(p)
+
+    return render(request, 'registrar_eventos/premiacion.html', {
+        'evento': evento,
+        'form': form,
+        'categorias': categorias,
+        'title': f"Premiación - {evento.nombre_actividad}"
+    })
