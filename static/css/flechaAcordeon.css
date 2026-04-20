@@ -1,0 +1,16 @@
+/* 1. Forzar que las flechas de los acordeones sean blancas */
+    .accordion-button::after {
+        filter: brightness(0) invert(1) !important;
+    }
+    
+    /* 2. Quitar el resplandor azul al hacer clic (opcional para estética limpia) */
+    .accordion-button:focus {
+        box-shadow: none !important;
+        border-color: rgba(0,0,0,.125) !important;
+    }
+
+    /* 3. Ajuste para que el texto de las etiquetas se vea profesional */
+    .fw-bold {
+        font-size: 0.9rem;
+        color: #333;
+    }

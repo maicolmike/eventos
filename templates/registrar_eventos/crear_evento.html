@@ -2,80 +2,79 @@
 {% load static %}
 
 {% block content %}
+
 {% if user.is_superuser %}
 
 <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 <link rel="stylesheet" href="{% static 'css/botonRegister.css' %}">
+<link rel="stylesheet" href="{% static 'css/flechaAcordeon.css' %}">
 
 <div class="container mt-5 mb-5">
 
     {% include 'inicio/messages.html' %}
 
-    <h3 class="mb-4"><b>Registrar Evento Integral</b></h3>
+    <h3 class="mb-4"><b>Registrar Evento</b></h3>
 
     <form method="post">
         {% csrf_token %}
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Información de la Actividad</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-2 mb-3"><label>Agencia</label>{{ form.agencia }}</div>
-                    <div class="col-md-2 mb-3"><label>Fecha informe</label>{{ form.fecha_informe }}</div>
-                    <div class="col-md-2 mb-3"><label>Fecha actividad</label>{{ form.fecha_actividad }}</div>
-                    <div class="col-md-3 mb-3"><label>Tipo actividad</label>{{ form.tipo_actividad }}</div>
-                    <div class="col-md-3 mb-3"><label>Lugar</label>{{ form.lugar_actividad }}</div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-md-5 mb-3"><label>Nombre actividad</label>{{ form.nombre_actividad }}</div>
-                    <div class="col-md-2 mb-3"><label>Cupo total</label>{{ form.cupo_participantes }}</div>
-                    <div class="col-md-2 mb-3"><label>Asociados</label>{{ form.asociados_participantes }}</div>
-                    <div class="col-md-3 mb-3"><label>Acompañantes</label>{{ form.acompanantes_participantes }}</div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-md-3 mb-3"><label>Facilitador</label>{{ form.facilitador }}</div>
-                    <div class="col-md-3 mb-3"><label>Entidad aliada</label>{{ form.entidad_aliada }}</div>
-                    <div class="col-md-6 mb-3"><label>Programa de desarrollo</label>{{ form.programa_desarrollo }}</div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-md-12 mb-3"><label>Descripción ejecución</label>{{ form.descripcion_ejecucion }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card border-primary shadow-sm h-100">
-                    <div class="card-body">
-                        <label class="form-label fw-bold text-primary"><i class="fas fa-users"></i> Colaboradores</label>
-                        {{ form.colaboradores }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-danger shadow-sm h-100">
-                    <div class="card-body">
-                        <label class="form-label fw-bold text-danger"><i class="fas fa-user-tie"></i> Directivos</label>
-                        {{ form.directivos }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="accordion mb-4" id="accordionPresupuesto">
+        <div class="accordion" id="accordionGeneral">
             
-            <div class="accordion-item border-primary">
+            <div class="accordion-item border-dark mb-4 shadow-sm">
+                <h2 class="accordion-header">
+                    <button class="accordion-button bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseActividad">
+                        <i class="fas fa-calendar-alt me-2"></i> Información de la Actividad
+                    </button>
+                </h2>
+                <div id="collapseActividad" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-md-2 mb-3"><label class="fw-bold">Agencia</label>{{ form.agencia }}</div>
+                            <div class="col-md-2 mb-3"><label class="fw-bold">Fecha informe</label>{{ form.fecha_informe }}</div>
+                            <div class="col-md-2 mb-3"><label class="fw-bold">Fecha actividad</label>{{ form.fecha_actividad }}</div>
+                            <div class="col-md-3 mb-3"><label class="fw-bold">Tipo actividad</label>{{ form.tipo_actividad }}</div>
+                            <div class="col-md-3 mb-3"><label class="fw-bold">Lugar</label>{{ form.lugar_actividad }}</div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-5 mb-3"><label class="fw-bold">Nombre actividad</label>{{ form.nombre_actividad }}</div>
+                            <div class="col-md-2 mb-3"><label class="fw-bold">Cupo total</label>{{ form.cupo_participantes }}</div>
+                            <div class="col-md-2 mb-3"><label class="fw-bold">Asociados</label>{{ form.asociados_participantes }}</div>
+                            <div class="col-md-3 mb-3"><label class="fw-bold">Acompañantes</label>{{ form.acompanantes_participantes }}</div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-3 mb-3"><label class="fw-bold">Facilitador</label>{{ form.facilitador }}</div>
+                            <div class="col-md-3 mb-3"><label class="fw-bold">Entidad aliada</label>{{ form.entidad_aliada }}</div>
+                            <div class="col-md-6 mb-3"><label class="fw-bold">Programa de desarrollo</label>{{ form.programa_desarrollo }}</div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 mb-3"><label class="fw-bold">Descripción ejecución</label>{{ form.descripcion_ejecucion }}</div>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-primary"><i class="fas fa-users"></i> Colaboradores</label>
+                                {{ form.colaboradores }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-danger"><i class="fas fa-user-tie"></i> Directivos</label>
+                                {{ form.directivos }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border-primary mb-4 shadow-sm">
                 <h2 class="accordion-header">
                     <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP">
                         <i class="fas fa-chart-line me-2"></i> Presupuesto Proyectado (Estimaciones)
                     </button>
                 </h2>
-                <div id="collapseP" class="accordion-collapse collapse show" data-bs-parent="#accordionPresupuesto">
+                <div id="collapseP" class="accordion-collapse collapse show">
                     <div class="accordion-body">
                         <div class="row">
                             {% for field in form_proyectado %}
@@ -89,13 +88,13 @@
                 </div>
             </div>
 
-            <div class="accordion-item border-success mt-3">
+            <div class="accordion-item border-success mb-4 shadow-sm">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseE">
+                    <button class="accordion-button bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseE">
                         <i class="fas fa-money-bill-wave me-2"></i> Presupuesto Ejecutado (Real)
                     </button>
                 </h2>
-                <div id="collapseE" class="accordion-collapse collapse" data-bs-parent="#accordionPresupuesto">
+                <div id="collapseE" class="accordion-collapse collapse show">
                     <div class="accordion-body">
                         <div class="row">
                             {% for field in form_ejecutado %}
@@ -109,11 +108,9 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="text-center mt-4">
+        </div> <div class="text-center mt-4">
             <button type="submit" class="btn btn-dark btn-lg px-5 shadow register-button">
-                <i class="fas fa-save me-2"></i> Guardar Evento y Presupuestos
+                <i class="fas fa-save me-2"></i> Guardar Registro Completo
             </button>
         </div>
 
@@ -122,7 +119,7 @@
 
 <script>
     $(document).ready(function() {
-        // Inicializamos Select2
+        // Inicialización de Select2 para transformar selects múltiples en buscadores amigables
         $('select[multiple]').select2({
             theme: 'bootstrap-5',
             placeholder: 'Seleccionar...',
