@@ -3,86 +3,147 @@
 
 {% block content %}
 
+
+<link rel="stylesheet" href="{% static 'css/flechaAcordeon.css' %}">
 <div class="container mt-5">
+    
     {% include 'inicio/messages.html' %}
 
     <h3 class="mb-4">
         <i class="fas fa-trophy text-warning"></i> Premiación - {{ evento.nombre_actividad }}
     </h3>
 
-    <a href="{% url 'listar_eventos' %}" class="btn btn-success text-white btn-outline-primary mb-3">
+    <a href="{% url 'listar_eventos' %}" class="btn btn-success text-white mb-3">
         Volver
     </a>
 
-    <!-- 🔹 FORMULARIO -->
-    <div class="card mb-4 shadow">
-        <div class="card-header bg-dark text-white">
-            Agregar Premio
-        </div>
-        <div class="card-body">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-4">{{ form.nombres.label_tag }} {{ form.nombres }}</div>
-                    <div class="col-md-4">{{ form.apellidos.label_tag }} {{ form.apellidos }}</div>
-                    <div class="col-md-4">{{ form.identificacion.label_tag }} {{ form.identificacion }}</div>
+    <!-- 🔥 FORMULARIO EN ACORDEÓN -->
+    <div class="accordion mb-4" id="accordionForm">
 
-                    <div class="col-md-4 mt-2">{{ form.agencia.label_tag }} {{ form.agencia }}</div>
-                    <div class="col-md-4 mt-2">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
-                    <div class="col-md-2 mt-2">{{ form.puesto_numero.label_tag }} {{ form.puesto_numero }}</div>
-                    <div class="col-md-2 mt-2">{{ form.valor_premio.label_tag }} {{ form.valor_premio }}</div>
-                </div>
-
-                <button class="btn btn-dark text-white btn-outline-primary mt-3">
-                    <i class="fas fa-plus"></i> Agregar
+        <div class="accordion-item shadow">
+            <h2 class="accordion-header" id="headingForm">
+                <button class="accordion-button bg-dark text-white" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseForm"
+                        aria-expanded="true">
+                Agregar Premio
                 </button>
-            </form>
+            </h2>
+
+            <!-- 🔥 show = abierto al inicio -->
+            <div id="collapseForm" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        {{ form.errors }}
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form.nombres.label_tag }}
+                                {{ form.nombres }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form.apellidos.label_tag }}
+                                {{ form.apellidos }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form.identificacion.label_tag }}
+                                {{ form.identificacion }}
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                {{ form.agencia.label_tag }}
+                                {{ form.agencia }}
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                {{ form.categoria.label_tag }}
+                                {{ form.categoria }}
+                            </div>
+
+                            <div class="col-md-2 mt-2">
+                                {{ form.puesto_numero.label_tag }}
+                                {{ form.puesto_numero }}
+                            </div>
+
+                            <div class="col-md-2 mt-2">
+                                {{ form.valor_premio.label_tag }}
+                                {{ form.valor_premio }}
+                            </div>
+                        </div>
+
+                        <!-- 🔥 BOTÓN NEGRO -->
+                        <button class="btn btn-dark mt-3">
+                            <i class="fas fa-plus"></i> Agregar
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <!-- 🔥 ACORDEÓN -->
+    <!-- 🔥 ACORDEÓN DE CATEGORÍAS -->
     <div class="accordion" id="accordionPremios">
 
         {% for categoria, premios in categorias.items %}
         <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#{{ categoria }}">
+
+            <h2 class="accordion-header" id="heading{{ categoria }}">
+                <button class="accordion-button bg-success text-white" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ categoria }}"
+                        aria-expanded="true">
+
                     {{ categoria|title }} ({{ premios|length }})
                 </button>
             </h2>
 
-            <div id="{{ categoria }}" class="accordion-collapse collapse">
+            <!-- 🔥 show = abierto pero se puede cerrar -->
+            <div id="collapse{{ categoria }}" class="accordion-collapse collapse show">
+
                 <div class="accordion-body">
 
                     {% if premios %}
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Puesto</th>
-                                <th>Nombre</th>
-                                <th>Identificación</th>
-                                <th>Agencia</th>
-                                <th>Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for p in premios %}
-                            <tr>
-                                <td>{{ p.puesto_numero }}</td>
-                                <td>{{ p.nombres }} {{ p.apellidos }}</td>
-                                <td>{{ p.identificacion }}</td>
-                                <td>{{ p.agencia }}</td>
-                                <td>${{ p.valor_premio }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>Puesto</th>
+                                    <th>Nombre</th>
+                                    <th>Identificación</th>
+                                    <th>Agencia</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for p in premios %}
+                                <tr>
+                                    <td class="text-center">{{ p.puesto_numero }}</td>
+                                    <td>{{ p.nombres }} {{ p.apellidos }}</td>
+                                    <td>{{ p.identificacion }}</td>
+                                    <td>{{ p.agencia }}</td>
+                                    <td><strong>${{ p.valor_premio }}</strong></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
                     {% else %}
-                        <p class="text-muted">Sin premios</p>
+                        <p class="text-muted">Sin premios en esta categoría</p>
                     {% endif %}
 
                 </div>
             </div>
+
         </div>
         {% endfor %}
 
