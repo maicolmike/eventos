@@ -9,13 +9,14 @@
     
     {% include 'inicio/messages.html' %}
 
-    <h3 class="mb-4">
-        <i class="fas fa-trophy text-warning"></i> Premiación - {{ evento.nombre_actividad }}
-    </h3>
-
-    <a href="{% url 'listar_eventos' %}" class="btn btn-success text-white mb-3">
-        Volver
-    </a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-dark">
+            <i class="fas fa-trophy text-warning"></i> Premiación - {{ evento.nombre_actividad }}
+        </h2>
+        <a href="{% url 'listar_eventos' %}" class="btn btn-success text-white btn-outline-primary">
+        <i class="fas fa-arrow-left"></i> Volver al listado
+        </a>
+    </div>
 
     <!-- 🔥 FORMULARIO EN ACORDEÓN -->
     <div class="accordion mb-4" id="accordionForm">
