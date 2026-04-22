@@ -39,18 +39,17 @@ def crear_evento(request):
 
         else:
             # 🔥 AQUÍ ESTÁ LA MAGIA (convertir errores a messages)
+            for campo, errores in form.errors.items():
+                for error in errores:
+                    messages.error(request, f"Informacion de la actividad - {form.fields[campo].label}: {error}")
             
             for campo, errores in form_proyectado.errors.items():
                 for error in errores:
-                    messages.error(request, f"Proyectado - {form_proyectado.fields[campo].label}: {error}")
+                    messages.error(request, f"Presupuesto proyectado - {form_proyectado.fields[campo].label}: {error}")
 
             for campo, errores in form_ejecutado.errors.items():
                 for error in errores:
-                    messages.error(request, f"Ejecutado - {campo}: {error}")
-
-            for campo, errores in form.errors.items():
-                for error in errores:
-                    messages.error(request, f"Evento - {campo}: {error}")
+                    messages.error(request, f"Presupuesto ejecutado - {form_ejecutado.fields[campo].label}: {error}")
 
     else:
         # Formularios vacíos para la carga inicial (GET)
