@@ -26,21 +26,79 @@
 
                 <div id="infoEvento" class="accordion-collapse collapse show">
                     <div class="accordion-body">
-                        {{ form.agencia.label_tag }} {{ form.agencia }}
-                        {{ form.fecha_informe.label_tag }} {{ form.fecha_informe }}
-                        {{ form.tipo_actividad.label_tag }} {{ form.tipo_actividad }}
-                        {{ form.nombre_actividad.label_tag }} {{ form.nombre_actividad }}
-                        {{ form.fecha_actividad.label_tag }} {{ form.fecha_actividad }}
-                        {{ form.lugar_actividad.label_tag }} {{ form.lugar_actividad }}
 
-                        {{ form.cupo_participantes.label_tag }} {{ form.cupo_participantes }}
-                        {{ form.asociados_participantes.label_tag }} {{ form.asociados_participantes }}
-                        {{ form.acompanantes_participantes.label_tag }} {{ form.acompanantes_participantes }}
+                        <div class="row">
+                            <div class="col-md-2 mb-3">
+                                <label class="fw-bold">{{ form.agencia.label }}</label>
+                                {{ form.agencia }}
+                            </div>
 
-                        {{ form.facilitador.label_tag }} {{ form.facilitador }}
-                        {{ form.entidad_aliada.label_tag }} {{ form.entidad_aliada }}
-                        {{ form.programa_desarrollo.label_tag }} {{ form.programa_desarrollo }}
-                        {{ form.descripcion_ejecucion.label_tag }} {{ form.descripcion_ejecucion }}
+                            <div class="col-md-2 mb-3">
+                                <label class="fw-bold">{{ form.fecha_informe.label }}</label>
+                                {{ form.fecha_informe }}
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="fw-bold">{{ form.fecha_actividad.label }}</label>
+                                {{ form.fecha_actividad }}
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="fw-bold">{{ form.tipo_actividad.label }}</label>
+                                {{ form.tipo_actividad }}
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="fw-bold">{{ form.lugar_actividad.label }}</label>
+                                {{ form.lugar_actividad }}
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-5 mb-3">
+                                <label class="fw-bold">{{ form.nombre_actividad.label }}</label>
+                                {{ form.nombre_actividad }}
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="fw-bold">{{ form.cupo_participantes.label }}</label>
+                                {{ form.cupo_participantes }}
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="fw-bold">{{ form.asociados_participantes.label }}</label>
+                                {{ form.asociados_participantes }}
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="fw-bold">{{ form.acompanantes_participantes.label }}</label>
+                                {{ form.acompanantes_participantes }}
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-3 mb-3">
+                                <label class="fw-bold">{{ form.facilitador.label }}</label>
+                                {{ form.facilitador }}
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="fw-bold">{{ form.entidad_aliada.label }}</label>
+                                {{ form.entidad_aliada }}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-bold">{{ form.programa_desarrollo.label }}</label>
+                                {{ form.programa_desarrollo }}
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-md-12 mb-3">
+                                <label class="fw-bold">{{ form.descripcion_ejecucion.label }}</label>
+                                {{ form.descripcion_ejecucion }}
+                            </div>
+                        </div>
 
                         <hr>
 
@@ -64,46 +122,60 @@
                 </div>
             </div>
 
-            <!-- 🔹 PRESUPUESTO -->
-            <div class="accordion-item">
+            <!-- PRESUPUESTO PROYECTADO -->
+            <div class="accordion-item border-primary mb-4 shadow-sm">
                 <h2 class="accordion-header">
-                    <button class="bg-dark text-white accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#presupuestoEvento">
-                        💰 Presupuesto
+                    <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP">
+                        Presupuesto Proyectado
                     </button>
                 </h2>
-
-                <div id="presupuestoEvento" class="accordion-collapse collapse show">
+                <div id="collapseP" class="accordion-collapse collapse show">
                     <div class="accordion-body">
-
                         <div class="row">
-
-                            <div class="col-md-6">
-                                <h6 class="text-success">Proyectado</h6>
-                                {{ form_proyectado.as_p }}
-                            </div>
-
-                            <div class="col-md-6">
-                                <h6 class="text-danger">Ejecutado</h6>
-                                {{ form_ejecutado.as_p }}
-                            </div>
-
+                            {% for field in form_proyectado %}
+                                <div class="col-md-3 mb-3">
+                                    <label class="small fw-bold">{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
                         </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- PRESUPUESTO EJECUTADO -->
+            <div class="accordion-item border-success mb-4 shadow-sm">
+                <h2 class="accordion-header">
+                    <button class="accordion-button bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseE">
+                        Presupuesto Ejecutado
+                    </button>
+                </h2>
+                <div id="collapseE" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <div class="row">
+                            {% for field in form_ejecutado %}
+                                <div class="col-md-3 mb-3">
+                                    <label class="small fw-bold">{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <br>
-
-        <button type="submit" class="btn btn-primary">
-            💾 Guardar cambios
-        </button>
-
-        <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-secondary">
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-dark btn-lg px-5 shadow register-button">
+                💾 Guardar cambios
+            </button>
+            <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-secondary">
             Cancelar
-        </a>
+            </a>
+            <br>
+            <br>
+        </div>
 
     </form>
 
