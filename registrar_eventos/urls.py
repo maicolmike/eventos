@@ -10,4 +10,6 @@ urlpatterns = [
     path('editar_participante/', views.editar_participante_ajax, name='editar_participante_ajax'),
     path('delete_participante/', views.delete_participante_ajax, name='delete_participante_ajax'),
     path('evento/<int:evento_id>/premiacion/', views.gestionar_premiacion, name='gestionar_premiacion'),
+    path('evento/editar/<int:evento_id>/', views.editar_evento, name='editar_evento'),
+    #path('premio/editar/<int:premio_id>/', views.editar_premiacion, name='editar_premiacion'),
 ]

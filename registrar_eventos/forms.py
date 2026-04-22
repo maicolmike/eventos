@@ -69,10 +69,10 @@ class EventoForm(forms.ModelForm):
         widgets = {
             # Aplicamos clases de Bootstrap 'form-control' para que se vea bien
             'agencia': forms.Select(attrs={'class': 'form-control', 'id': 'agencia'}, choices=AGENCIA),
-            'fecha_informe': forms.DateInput(attrs={'class': 'form-control', 'id': 'fecha_informe', 'type': 'date'}),
+            'fecha_informe': forms.DateInput(attrs={'class': 'form-control','type': 'date'}, format='%Y-%m-%d'),
             'tipo_actividad': forms.Select(attrs={'class': 'form-control', 'id': 'tipo_actividad'}, choices=TIPO_ACTIVIDAD),
             'nombre_actividad': forms.TextInput(attrs={'class': 'form-control',}),
-            'fecha_actividad': forms.DateInput(attrs={'class': 'form-control', 'id': 'fecha_actividad', 'type': 'date'}),
+            'fecha_actividad': forms.DateInput(attrs={'class': 'form-control','type': 'date'}, format='%Y-%m-%d'),
             'lugar_actividad': forms.TextInput(attrs={'class': 'form-control',}),
             
             # Campos numéricos
@@ -96,6 +96,9 @@ class EventoForm(forms.ModelForm):
         # Filtramos para que en cada cuadro solo salgan los que corresponden
         self.fields['colaboradores'].queryset = Participante.objects.filter(tipo_participante='colaborador')
         self.fields['directivos'].queryset = Participante.objects.filter(tipo_participante='directivo')
+
+        self.fields['fecha_informe'].input_formats = ['%Y-%m-%d']
+        self.fields['fecha_actividad'].input_formats = ['%Y-%m-%d']
 
 class ParticipanteForm(forms.ModelForm):
     class Meta:
