@@ -57,16 +57,16 @@ class Presupuesto(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='presupuestos')
     tipo = models.CharField(max_length=20, choices=TIPOS)
 
-    refrigerio = models.DecimalField(max_digits=10, decimal_places=2)
-    almuerzo = models.DecimalField(max_digits=10, decimal_places=2)
-    publicidad = models.DecimalField(max_digits=10, decimal_places=2)
-    sonido = models.DecimalField(max_digits=10, decimal_places=2)
-    video = models.DecimalField(max_digits=10, decimal_places=2)
-    premiacion = models.DecimalField(max_digits=10, decimal_places=2)
-    imprevistos = models.DecimalField(max_digits=10, decimal_places=2)
-    otros = models.DecimalField(max_digits=10, decimal_places=2)
-    valor_proyecto = models.DecimalField(max_digits=12, decimal_places=2)
-    total_presupuesto = models.DecimalField(max_digits=12, decimal_places=2)
+    refrigerio = models.DecimalField(max_digits=15, decimal_places=2)
+    almuerzo = models.DecimalField(max_digits=15, decimal_places=2)
+    publicidad = models.DecimalField(max_digits=15, decimal_places=2)
+    sonido = models.DecimalField(max_digits=15, decimal_places=2)
+    video = models.DecimalField(max_digits=15, decimal_places=2)
+    premiacion = models.DecimalField(max_digits=15, decimal_places=2)
+    imprevistos = models.DecimalField(max_digits=15, decimal_places=2)
+    otros = models.DecimalField(max_digits=15, decimal_places=2)
+    valor_proyecto = models.DecimalField(max_digits=15, decimal_places=2)
+    total_presupuesto = models.DecimalField(max_digits=15, decimal_places=2)
 
 class Premiacion(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='premiaciones')
@@ -80,3 +80,4 @@ class Premiacion(models.Model):
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
+
