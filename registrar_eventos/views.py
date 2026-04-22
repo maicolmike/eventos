@@ -66,18 +66,48 @@ def crear_participantes(request):
         return redirect('crear_participantes')
     return render(request, 'registrar_eventos/crear_participantes.html', {'form': form ,'title': "Crear participante",})
 
-# detalle evento
+# ================================
+# DETALLE EVENTO (CON TODO)
+# ================================
 @login_required(login_url='login')
 def detalle_evento(request, evento_id):
+    # 🔹 Obtener el evento o lanzar error 404
     evento = get_object_or_404(Evento, id=evento_id)
-    # Extra: Obtenemos los presupuestos para mostrarlos en el detalle
+
+    # ================================
+    # 🔹 PRESUPUESTOS
+    # ================================
+    # Traemos el presupuesto proyectado
     presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
-    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
     
+    # Traemos el presupuesto ejecutado
+    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
+
+    # ================================
+    # 🔹 PREMIACIONES
+    # ================================
+    # Traemos todas las premiaciones del evento ordenadas
+    premiaciones = evento.premiaciones.all().order_by('categoria', 'puesto_numero')
+
+    # Creamos estructura por categorías
+    categorias = {
+        'infantil': [],
+        'juvenil': [],
+        'libre': []
+    }
+
+    # Agrupamos manualmente
+    for p in premiaciones:
+        categorias[p.categoria].append(p)
+
+    # ================================
+    # 🔹 ENVIAR AL TEMPLATE
+    # ================================
     return render(request, 'registrar_eventos/detalle_evento.html', {
         'evento': evento,
         'presu_p': presu_proyectado,
         'presu_e': presu_ejecutado,
+        'categorias': categorias,
         'title': f"Detalle - {evento.nombre_actividad}"
     })
 

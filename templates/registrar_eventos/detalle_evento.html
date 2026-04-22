@@ -110,5 +110,128 @@
                         </div>
                     </div>
                 </div>
-            </div> </div> </div> </div>
+            </div> 
+        </div> 
+    </div>
+
+    <!-- 💰 PRESUPUESTO -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Presupuesto</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- 🔹 PRESUPUESTO PROYECTADO -->
+                <div class="col-md-6">
+                    <h6 class="text-success">Proyectado</h6>
+
+                    {% if presu_p %}
+                        <ul class="list-group">
+                            <li class="list-group-item">Refrigerio: ${{ presu_p.refrigerio }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_p.almuerzo }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_p.publicidad }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_p.sonido }}</li>
+                            <li class="list-group-item">Video: ${{ presu_p.video }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_p.premiacion }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_p.imprevistos }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_p.otros }}</li>
+
+                            <li class="list-group-item bg-light">
+                                <strong>Total: ${{ presu_p.total_presupuesto }}</strong>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No hay presupuesto proyectado</p>
+                    {% endif %}
+                </div>
+
+                <!-- 🔹 PRESUPUESTO EJECUTADO -->
+                <div class="col-md-6">
+                    <h6 class="text-danger">Ejecutado</h6>
+
+                    {% if presu_e %}
+                        <ul class="list-group">
+                            <li class="list-group-item">Refrigerio: ${{ presu_e.refrigerio }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_e.almuerzo }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_e.publicidad }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_e.sonido }}</li>
+                            <li class="list-group-item">Video: ${{ presu_e.video }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_e.premiacion }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_e.imprevistos }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_e.otros }}</li>
+
+                            <li class="list-group-item bg-light">
+                                <strong>Total: ${{ presu_e.total_presupuesto }}</strong>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No hay presupuesto ejecutado</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- fin presupuesto-->
+    
+    <!-- 🏆 PREMIACIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between">
+            <h5 class="mb-0">Premiaciones</h5>
+
+            <!-- 🔥 BOTÓN PARA IR A GESTIONAR PREMIOS -->
+            <a href="{% url 'gestionar_premiacion' evento.id %}" class="btn btn-dark btn-sm">
+                Gestionar
+            </a>
+        </div>
+
+        <div class="card-body">
+
+            {% for categoria, premios in categorias.items %}
+                
+                <h6 class="mt-3 text-capitalize">
+                    {{ categoria }} ({{ premios|length }})
+                </h6>
+
+                {% if premios %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Puesto</th>
+                                    <th>Nombre</th>
+                                    <th>Identificación</th>
+                                    <th>Agencia</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for p in premios %}
+                                <tr>
+                                    <td>{{ p.puesto_numero }}</td>
+                                    <td>{{ p.nombres }} {{ p.apellidos }}</td>
+                                    <td>{{ p.identificacion }}</td>
+                                    <td>{{ p.agencia }}</td>
+                                    <td><strong>${{ p.valor_premio }}</strong></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Sin premios en esta categoría</p>
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+    <!-- fin premiaciones-->
+
+</div>
+
 {% endblock %}
