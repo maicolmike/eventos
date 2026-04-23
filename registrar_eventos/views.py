@@ -291,5 +291,6 @@ def editar_premiacion(request, premio_id):
 
     return render(request, 'registrar_eventos/editar_premio.html', {
         'form': form,
-        'premio': premio
+        'premio': premio,
+        'title': 'Editar premio'
     })

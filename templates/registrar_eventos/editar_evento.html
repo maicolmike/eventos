@@ -20,7 +20,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="bg-dark text-white accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#infoEvento">
-                        📌 Información del Evento
+                        <i class="fas fa-calendar-alt me-2"></i>Información del Evento
                     </button>
                 </h2>
 
@@ -126,7 +126,7 @@
             <div class="accordion-item border-primary mb-4 shadow-sm">
                 <h2 class="accordion-header">
                     <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP">
-                        Presupuesto Proyectado
+                        <i class="fa-solid fa-dollar-sign me-2"></i>Presupuesto Proyectado
                     </button>
                 </h2>
                 <div id="collapseP" class="accordion-collapse collapse show">
@@ -147,7 +147,7 @@
             <div class="accordion-item border-success mb-4 shadow-sm">
                 <h2 class="accordion-header">
                     <button class="accordion-button bg-success text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseE">
-                        Presupuesto Ejecutado
+                        <i class="fa-solid fa-dollar-sign me-2"></i>Presupuesto Ejecutado
                     </button>
                 </h2>
                 <div id="collapseE" class="accordion-collapse collapse show">
@@ -170,7 +170,7 @@
             <button type="submit" class="btn btn-dark btn-lg px-5 shadow register-button">
                 💾 Guardar cambios
             </button>
-            <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-secondary">
+            <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-danger text-white btn-outline-primary">
             Cancelar
             </a>
             <br>

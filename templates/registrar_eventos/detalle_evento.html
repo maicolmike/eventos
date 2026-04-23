@@ -190,8 +190,8 @@
             <h5 class="mb-0">Premiaciones</h5>
 
             <!-- 🔥 BOTÓN PARA IR A GESTIONAR PREMIOS -->
-            <a href="{% url 'gestionar_premiacion' evento.id %}" class="btn btn-dark btn-sm">
-                Gestionar
+            <a href="{% url 'gestionar_premiacion' evento.id %}" class="btn btn-dark btn-sm text-white btn-outline-primary">
+                <i class="fas fa-plus"></i> Agregar
             </a>
         </div>
 
@@ -213,6 +213,7 @@
                                     <th>Identificación</th>
                                     <th>Agencia</th>
                                     <th>Valor</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
 
@@ -224,6 +225,11 @@
                                     <td>{{ p.identificacion }}</td>
                                     <td>{{ p.agencia }}</td>
                                     <td><strong>${{ p.valor_premio }}</strong></td>
+                                    <td>
+                                        <a href="{% url 'editar_premiacion' p.id %}" class="btn btn-sm btn-warning text-dark btn-outline-primary hover-white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

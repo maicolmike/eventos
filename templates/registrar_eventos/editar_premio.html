@@ -1,0 +1,80 @@
+{% extends 'inicio/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h3 class="mb-4">Editar Premio</h3>
+
+    {% include 'inicio/messages.html' %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-2 mb-3">
+                        <label class="fw-bold">{{ form.puesto_numero.label }}</label>
+                        {{ form.puesto_numero }}
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="fw-bold">{{ form.categoria.label }}</label>
+                        {{ form.categoria }}
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="fw-bold">{{ form.identificacion.label }}</label>
+                        {{ form.identificacion }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="fw-bold">{{ form.agencia.label }}</label>
+                        {{ form.agencia }}
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">{{ form.nombres.label }}</label>
+                        {{ form.nombres }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="fw-bold">{{ form.apellidos.label }}</label>
+                        {{ form.apellidos }}
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="fw-bold">{{ form.valor_premio.label }}</label>
+                        {{ form.valor_premio }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit" class="btn btn-success text-white btn-outline-primary">
+            💾 Guardar cambios
+        </button>
+
+        <a href="{% url 'detalle_evento' premio.evento.id %}" class="btn btn-danger text-white btn-outline-primary">
+            Cancelar
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
