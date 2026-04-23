@@ -1,47 +1,68 @@
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener("DOMContentLoaded", () => {
 
-    document.querySelectorAll('.btn-editar-premio').forEach(btn => {
+    const modal = document.getElementById("modalEditarPremio");
+    const form = document.getElementById("formEditarPremio");
+    const mensaje = document.getElementById("mensajeEditarPremio");
 
-        btn.addEventListener('click', function(){
+    const campos = [
+        "id",
+        "nombres",
+        "apellidos",
+        "identificacion",
+        "agencia",
+        "categoria",
+        "puesto_numero",
+        "valor_premio"
+    ];
 
-            document.getElementById('edit_id').value = this.dataset.id;
-            document.getElementById('edit_nombres').value = this.dataset.nombres;
-            document.getElementById('edit_apellidos').value = this.dataset.apellidos;
-            document.getElementById('edit_identificacion').value = this.dataset.identificacion;
-            document.getElementById('edit_puesto').value = this.dataset.puesto;
+    document.querySelectorAll(".btn-editar-premio").forEach(btn => {
+        btn.addEventListener("click", () => {
 
-            // 🔥 ESTE ERA TU PROBLEMA
-            document.getElementById('edit_valor').value = this.dataset.valor;
+            campos.forEach(campo => {
+                const input = document.getElementById(`edit_${campo}`);
+                if (input) {
+                    input.value = btn.dataset[campo] || "";
+                }
+            });
 
-            document.getElementById('edit_agencia').value = this.dataset.agencia;
-            document.getElementById('edit_categoria').value = this.dataset.categoria;
-
+            mensaje.innerHTML = "";
         });
-
     });
 
-});
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
+        mensaje.innerHTML = `<div class="alert alert-info">Guardando...</div>`;
 
+        try {
+            const formData = new FormData(form);
+            const url = form.getAttribute("data-url");
 
-document.getElementById('formEditarPremio').addEventListener('submit', function(e){
-    e.preventDefault();
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
 
-    const formData = new FormData(this);
+            const data = await response.json();
 
-    fetch("{% url 'editar_premio_ajax' %}", {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === 'success'){
-            location.reload();
-        }else{
-            alert('Error: ' + data.message);
+            if (data.status === "success") {
+                mensaje.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+
+                setTimeout(() => {
+                    bootstrap.Modal.getInstance(modal).hide();
+                    location.reload();
+                }, 800);
+
+            } else {
+                mensaje.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            }
+
+        } catch (error) {
+            mensaje.innerHTML = `<div class="alert alert-danger">Error de conexión</div>`;
         }
     });
+
 });

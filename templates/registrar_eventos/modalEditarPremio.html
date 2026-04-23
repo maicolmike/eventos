@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- 🔥 CENTRADO -->
         <div class="modal-content">
 
-            <form method="POST" id="formEditarPremio">
+            <form id="formEditarPremio" data-url="{% url 'editar_premio_ajax' %}">
                 {% csrf_token %}
 
                 <div class="modal-header bg-warning">
@@ -24,7 +24,7 @@
 
                         <div class="col-md-2 mb-3">
                             <label>Puesto</label>
-                            <input type="number" name="puesto_numero" id="edit_puesto" class="form-control" required>
+                            <input type="number" name="puesto_numero" id="edit_puesto_numero" class="form-control" required>
                         </div>
 
                         <div class="col-md-3 mb-3">
@@ -74,9 +74,11 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label>Valor Premio</label>
-                            <input type="number" name="valor_premio" id="edit_valor" class="form-control" required>
+                            <input type="number" name="valor_premio" id="edit_valor_premio" class="form-control" required>
                         </div>
                     </div>
+
+                    <div id="mensajeEditarPremio"></div> <!-- DIV PARA MOSTRAR MENSAJES DE ERROR O ÉXITO -->
 
                 </div>
 
@@ -90,53 +92,4 @@
         </div>
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-
-    document.querySelectorAll('.btn-editar-premio').forEach(btn => {
-
-        btn.addEventListener('click', function(){
-
-            document.getElementById('edit_id').value = this.dataset.id;
-            document.getElementById('edit_nombres').value = this.dataset.nombres;
-            document.getElementById('edit_apellidos').value = this.dataset.apellidos;
-            document.getElementById('edit_identificacion').value = this.dataset.identificacion;
-            document.getElementById('edit_puesto').value = this.dataset.puesto;
-
-            // 🔥 ESTE ERA TU PROBLEMA
-            document.getElementById('edit_valor').value = this.dataset.valor;
-
-            document.getElementById('edit_agencia').value = this.dataset.agencia;
-            document.getElementById('edit_categoria').value = this.dataset.categoria;
-
-        });
-
-    });
-
-});
-</script>
-
-<script>
-document.getElementById('formEditarPremio').addEventListener('submit', function(e){
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    fetch("{% url 'editar_premio_ajax' %}", {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.status === 'success'){
-            location.reload();
-        }else{
-            alert('Error: ' + data.message);
-        }
-    });
-});
-</script>
+<script src="{% static 'js/modalEditarPremio.js' %}"></script>
