@@ -226,8 +226,25 @@
                                     <td>{{ p.agencia }}</td>
                                     <td><strong>${{ p.valor_premio }}</strong></td>
                                     <td>
+                                        <!-- 
                                         <a href="{% url 'editar_premiacion' p.id %}" class="btn btn-sm btn-warning text-dark btn-outline-primary hover-white">
                                             <i class="fas fa-edit"></i>
+                                        </a>
+                                        -->
+                                        <a href="#" class="btn btn-sm btn-warning text-dark btn-editar-premio btn-outline-primary hover-white"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarPremio"
+
+                                        data-id="{{ p.id }}"
+                                        data-nombres="{{ p.nombres }}"
+                                        data-apellidos="{{ p.apellidos }}"
+                                        data-identificacion="{{ p.identificacion }}"
+                                        data-agencia="{{ p.agencia }}"
+                                        data-categoria="{{ p.categoria }}"
+                                        data-puesto="{{ p.puesto_numero }}"
+                                        data-valor="{{ p.valor_premio|floatformat:0 }}">
+
+                                        <i class="fas fa-edit"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -246,5 +263,6 @@
     <!-- fin premiaciones-->
 
 </div>
+{% include 'registrar_eventos/modalEditarPremio.html' %}
 
 {% endblock %}

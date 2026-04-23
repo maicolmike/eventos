@@ -294,3 +294,24 @@ def editar_premiacion(request, premio_id):
         'premio': premio,
         'title': 'Editar premio'
     })
+
+@login_required(login_url='login')
+def editar_premio_ajax(request):
+    try:
+        premio_id = request.POST.get('id')
+        premio = Premiacion.objects.get(id=premio_id)
+
+        premio.nombres = request.POST.get('nombres')
+        premio.apellidos = request.POST.get('apellidos')
+        premio.identificacion = request.POST.get('identificacion')
+        premio.agencia = request.POST.get('agencia')
+        premio.categoria = request.POST.get('categoria')
+        premio.puesto_numero = request.POST.get('puesto_numero')
+        premio.valor_premio = request.POST.get('valor_premio')
+
+        premio.save()
+
+        return JsonResponse({'status': 'success'})
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})

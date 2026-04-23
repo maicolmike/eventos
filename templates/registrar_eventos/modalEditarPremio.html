@@ -1,0 +1,142 @@
+{% load static %}
+
+<!-- ============================= -->
+<!-- MODAL EDITAR PREMIACIÓN -->
+<!-- ============================= -->
+<div class="modal fade" id="modalEditarPremio" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- 🔥 CENTRADO -->
+        <div class="modal-content">
+
+            <form method="POST" id="formEditarPremio">
+                {% csrf_token %}
+
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Editar Premio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- ID OCULTO -->
+                    <input type="hidden" name="id" id="edit_id">
+
+                    <div class="row">
+
+                        <div class="col-md-2 mb-3">
+                            <label>Puesto</label>
+                            <input type="number" name="puesto_numero" id="edit_puesto" class="form-control">
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label>Categoría</label>
+                            <select name="categoria" id="edit_categoria" class="form-control">
+                                <option value="infantil">Infantil</option>
+                                <option value="juvenil">Juvenil</option>
+                                <option value="libre">Libre</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label>Identificación</label>
+                            <input type="text" name="identificacion" id="edit_identificacion" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Agencia</label>
+                            <select name="agencia" id="edit_agencia" class="form-control">
+                                <option value="MOCOA">Mocoa</option>
+                                <option value="PUERTO ASIS">Puerto Asis</option>
+                                <option value="DORADA">Dorada</option>
+                                <option value="HORMIGA">Hormiga</option>
+                                <option value="ORITO">Orito</option>
+                                <option value="VILLA GARZON">Villa Garzon</option>
+                                <option value="PUERTO LEGUIZAMO">Puerto Leguizamo</option>
+                                <option value="SIBUNDOY">Sibundoy</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label>Nombres</label>
+                            <input type="text" name="nombres" id="edit_nombres" class="form-control">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Apellidos</label>
+                            <input type="text" name="apellidos" id="edit_apellidos" class="form-control">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label>Valor Premio</label>
+                            <input type="number" name="valor_premio" id="edit_valor" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark text-white btn-outline-primary">💾 Guardar</button>
+                    <button type="button" class="btn btn-danger text-white btn-outline-primary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+    document.querySelectorAll('.btn-editar-premio').forEach(btn => {
+
+        btn.addEventListener('click', function(){
+
+            document.getElementById('edit_id').value = this.dataset.id;
+            document.getElementById('edit_nombres').value = this.dataset.nombres;
+            document.getElementById('edit_apellidos').value = this.dataset.apellidos;
+            document.getElementById('edit_identificacion').value = this.dataset.identificacion;
+            document.getElementById('edit_puesto').value = this.dataset.puesto;
+
+            // 🔥 ESTE ERA TU PROBLEMA
+            document.getElementById('edit_valor').value = this.dataset.valor;
+
+            document.getElementById('edit_agencia').value = this.dataset.agencia;
+            document.getElementById('edit_categoria').value = this.dataset.categoria;
+
+        });
+
+    });
+
+});
+</script>
+
+<script>
+document.getElementById('formEditarPremio').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("{% url 'editar_premio_ajax' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === 'success'){
+            location.reload();
+        }else{
+            alert('Error: ' + data.message);
+        }
+    });
+});
+</script>
