@@ -57,16 +57,16 @@ class Presupuesto(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='presupuestos')
     tipo = models.CharField(max_length=20, choices=TIPOS)
 
-    refrigerio = models.DecimalField(max_digits=15, decimal_places=2)
-    almuerzo = models.DecimalField(max_digits=15, decimal_places=2)
-    publicidad = models.DecimalField(max_digits=15, decimal_places=2)
-    sonido = models.DecimalField(max_digits=15, decimal_places=2)
-    video = models.DecimalField(max_digits=15, decimal_places=2)
-    premiacion = models.DecimalField(max_digits=15, decimal_places=2)
-    imprevistos = models.DecimalField(max_digits=15, decimal_places=2)
-    otros = models.DecimalField(max_digits=15, decimal_places=2)
-    valor_proyecto = models.DecimalField(max_digits=15, decimal_places=2)
-    total_presupuesto = models.DecimalField(max_digits=15, decimal_places=2)
+    refrigerio = models.BigIntegerField() # BigInteger por si las cifras son muy altas
+    almuerzo = models.BigIntegerField()
+    publicidad = models.BigIntegerField()
+    sonido = models.BigIntegerField()
+    video = models.BigIntegerField()
+    premiacion = models.BigIntegerField()
+    imprevistos = models.BigIntegerField()
+    otros = models.BigIntegerField()
+    valor_proyecto = models.BigIntegerField()
+    total_presupuesto = models.BigIntegerField()
 
 class Premiacion(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='premiaciones')
@@ -76,7 +76,7 @@ class Premiacion(models.Model):
     agencia = models.CharField(max_length=100)
     categoria = models.CharField(max_length=100)
     puesto_numero = models.IntegerField()
-    valor_premio = models.DecimalField(max_digits=12, decimal_places=2)
+    valor_premio = models.BigIntegerField()
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"

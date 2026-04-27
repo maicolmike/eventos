@@ -61,6 +61,7 @@ def crear_evento(request):
         'form': form,
         'form_proyectado': form_proyectado,
         'form_ejecutado': form_ejecutado,
+        'evento': None , # Al ser None, el template dirá "Registrar"
         'title': "Crear evento integral"
     }
     return render(request, 'registrar_eventos/crear_evento.html', context)
@@ -81,9 +82,7 @@ def crear_participantes(request):
         return redirect('crear_participantes')
     return render(request, 'registrar_eventos/crear_participantes.html', {'form': form ,'title': "Crear participante",})
 
-# ================================
 # DETALLE EVENTO (CON TODO)
-# ================================
 @login_required(login_url='login')
 def detalle_evento(request, evento_id):
     # 🔹 Obtener el evento o lanzar error 404
@@ -235,7 +234,7 @@ def gestionar_premiacion(request, evento_id):
         'title': f"Premiación - {evento.nombre_actividad}"
     })
 
-# ================================ eDITAR EVENTO (TODO EN UNO) ================================
+# ================================ EDITAR EVENTO ALL EN UNO ================================
 @login_required(login_url='login')
 def editar_evento(request, evento_id):
     evento = get_object_or_404(Evento, id=evento_id)
@@ -273,7 +272,7 @@ def editar_evento(request, evento_id):
         'form': form,
         'form_proyectado': form_proyectado,
         'form_ejecutado': form_ejecutado,
-        'evento': evento,
+        'evento': evento, # Al existir, el template dirá "Editar"
         'title': 'Editar evento'
     })
 
