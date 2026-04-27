@@ -38,7 +38,7 @@ def crear_evento(request):
             return redirect('listar_eventos')
 
         else:
-            # 🔥 AQUÍ ESTÁ LA MAGIA (convertir errores a messages)
+            # (convertir errores a messages)
             for campo, errores in form.errors.items():
                 for error in errores:
                     messages.error(request, f"Informacion de la actividad - {form.fields[campo].label}: {error}")
@@ -62,7 +62,7 @@ def crear_evento(request):
         'form_proyectado': form_proyectado,
         'form_ejecutado': form_ejecutado,
         'evento': None , # Al ser None, el template dirá "Registrar"
-        'title': "Crear evento integral"
+        'title': "Crear evento"
     }
     return render(request, 'registrar_eventos/crear_evento.html', context)
 
@@ -72,35 +72,19 @@ def listar_eventos(request):
     eventos = Evento.objects.all()
     return render(request, 'registrar_eventos/listar_eventos.html', {'eventos': eventos, 'title': "Listar eventos",})
 
-#crear evento
-@login_required(login_url='login')
-def crear_participantes(request):
-    form = ParticipanteForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Participante creado')
-        return redirect('crear_participantes')
-    return render(request, 'registrar_eventos/crear_participantes.html', {'form': form ,'title': "Crear participante",})
-
 # DETALLE EVENTO (CON TODO)
 @login_required(login_url='login')
 def detalle_evento(request, evento_id):
-    # 🔹 Obtener el evento o lanzar error 404
+    # Obtener el evento o lanzar error 404
     evento = get_object_or_404(Evento, id=evento_id)
 
-    # ================================
-    # 🔹 PRESUPUESTOS
-    # ================================
-    # Traemos el presupuesto proyectado
+    # PRESUPUESTO proyectado: Traemos el presupuesto proyectado
     presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
     
-    # Traemos el presupuesto ejecutado
+    # PRESUPUESTO ejecutado: Traemos el presupuesto ejecutado
     presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
 
-    # ================================
-    # 🔹 PREMIACIONES
-    # ================================
-    # Traemos todas las premiaciones del evento ordenadas
+    # PREMIACIONES: Traemos todas las premiaciones del evento ordenadas
     premiaciones = evento.premiaciones.all().order_by('categoria', 'puesto_numero')
 
     # Creamos estructura por categorías
@@ -114,9 +98,8 @@ def detalle_evento(request, evento_id):
     for p in premiaciones:
         categorias[p.categoria].append(p)
 
-    # ================================
-    # 🔹 ENVIAR AL TEMPLATE
-    # ================================
+    # ENVIAR AL TEMPLATE
+    
     return render(request, 'registrar_eventos/detalle_evento.html', {
         'evento': evento,
         'presu_p': presu_proyectado,
@@ -124,6 +107,16 @@ def detalle_evento(request, evento_id):
         'categorias': categorias,
         'title': f"Detalle - {evento.nombre_actividad}"
     })
+
+#crear participantes
+@login_required(login_url='login')
+def crear_participantes(request):
+    form = ParticipanteForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Participante creado')
+        return redirect('crear_participantes')
+    return render(request, 'registrar_eventos/crear_participantes.html', {'form': form ,'title': "Crear participante",})
 
 #listar participantes
 @login_required(login_url='login')
