@@ -13,4 +13,5 @@ urlpatterns = [
     path('evento/editar/<int:evento_id>/', views.editar_evento, name='editar_evento'),
     path('premio/editar/<int:premio_id>/', views.editar_premiacion, name='editar_premiacion'),
     path('editar_premio_ajax/', views.editar_premio_ajax, name='editar_premio_ajax'),
+    path('delete_premio_ajax/', views.delete_premio_ajax, name='delete_premio_ajax'),
 ]

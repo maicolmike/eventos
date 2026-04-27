@@ -1,0 +1,37 @@
+{% load static %}
+<div class="modal fade" id="modalEliminarPremio" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form id="formEliminar" data-url="{% url 'delete_premio_ajax' %}">
+        {% csrf_token %}
+
+        <input type="hidden" id="delete_id" name="id">
+
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title">Eliminar premio</h5>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body text-center">
+          <p>Seguro que deseas eliminar el premio de:</p>
+          <!-- Nombre completo -->
+          <h5 id="delete_nombre_completo" class="text-danger"></h5>
+
+          <!-- Mensaje de eliminación -->
+          <div id="mensajeEliminar"></div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Sí, eliminar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/modalEliminarPremio.js' %}"></script>

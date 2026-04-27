@@ -317,3 +317,33 @@ def editar_premio_ajax(request):
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+
+#eliminar premiacion modal
+@login_required(login_url='login')
+def delete_premio_ajax(request):
+    try:
+        premio_id = request.POST.get('id')
+
+        if not premio_id:
+            return JsonResponse({'status': 'error', 'message': 'No llegó el ID'})
+
+        premio = Premiacion.objects.get(id=premio_id)
+        premio.delete()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Premio eliminado correctamente'
+        })
+
+    except Premiacion.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'El premio no existe'
+        })
+
+    except Exception as e:
+        print("🔥 ERROR ELIMINAR:", e)
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        })
