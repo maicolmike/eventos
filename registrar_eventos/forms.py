@@ -142,16 +142,16 @@ class PresupuestoForm(forms.ModelForm):
             'total_presupuesto': 'Total del presupuesto',
         }
         widgets = {
-            'refrigerio': forms.NumberInput(attrs={'class': 'form-control'}),
-            'almuerzo': forms.NumberInput(attrs={'class': 'form-control'}),
-            'publicidad': forms.NumberInput(attrs={'class': 'form-control'}),
-            'sonido': forms.NumberInput(attrs={'class': 'form-control'}),
-            'video': forms.NumberInput(attrs={'class': 'form-control'}),
-            'premiacion': forms.NumberInput(attrs={'class': 'form-control'}),
-            'imprevistos': forms.NumberInput(attrs={'class': 'form-control'}),
-            'otros': forms.NumberInput(attrs={'class': 'form-control'}),
-            'valor_proyecto': forms.NumberInput(attrs={'class': 'form-control'}),
-            'total_presupuesto': forms.NumberInput(attrs={'class': 'form-control'}),
+            'refrigerio': forms.TextInput(attrs={'class': 'form-control money'}),
+            'almuerzo': forms.TextInput(attrs={'class': 'form-control money'}),
+            'publicidad': forms.TextInput(attrs={'class': 'form-control money'}),
+            'sonido': forms.TextInput(attrs={'class': 'form-control money'}),
+            'video': forms.TextInput(attrs={'class': 'form-control money'}),
+            'premiacion': forms.TextInput(attrs={'class': 'form-control money'}),
+            'imprevistos': forms.TextInput(attrs={'class': 'form-control money'}),
+            'otros': forms.TextInput(attrs={'class': 'form-control money'}),
+            'valor_proyecto': forms.TextInput(attrs={'class': 'form-control money'}),
+            'total_presupuesto': forms.TextInput(attrs={'class': 'form-control money'}),
         }
 
 class PremiacionForm(forms.ModelForm):
