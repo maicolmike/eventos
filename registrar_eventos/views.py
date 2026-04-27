@@ -149,7 +149,6 @@ def editar_participante_ajax(request):
         })
 
     except Exception as e:
-        print("🔥 ERROR REAL:", e)  # 👈 IMPORTANTE
         return JsonResponse({
             'status': 'error',
             'message': str(e)
@@ -179,15 +178,13 @@ def delete_participante_ajax(request):
         })
 
     except Exception as e:
-        print("🔥 ERROR ELIMINAR:", e)
         return JsonResponse({
             'status': 'error',
             'message': str(e)
         })
 
-# ================================
+
 # PREMIACIONES POR EVENTO
-# ================================
 @login_required(login_url='login')
 def gestionar_premiacion(request, evento_id):
     evento = get_object_or_404(Evento, id=evento_id)
@@ -195,20 +192,17 @@ def gestionar_premiacion(request, evento_id):
     form = PremiacionForm(request.POST or None)
 
     if request.method == 'POST':
-        print("POST DATA:", request.POST)  # 👈 DEBUG
+        print("POST DATA:", request.POST)
 
     if form.is_valid():
         premiacion = form.save(commit=False)
         premiacion.evento = evento
         premiacion.save()
-        print("✅ GUARDÓ")
         
         messages.success(request, 'Premio agregado correctamente')
         return redirect('gestionar_premiacion', evento_id=evento.id)
-    else:
-        print("❌ ERRORES:", form.errors)  # 👈 CLAVE
-
-    # Agrupar por categoría (🔥 importante)
+   
+    # Agrupar por categoría ( importante)
     premiaciones = evento.premiaciones.all().order_by('categoria', 'puesto_numero')
 
     categorias = {
