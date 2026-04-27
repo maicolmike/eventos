@@ -108,6 +108,48 @@ def detalle_evento(request, evento_id):
         'title': f"Detalle - {evento.nombre_actividad}"
     })
 
+# EDITAR EVENTO ALL EN UNO
+@login_required(login_url='login')
+def editar_evento(request, evento_id):
+    evento = get_object_or_404(Evento, id=evento_id)
+
+    presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
+    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
+
+    if request.method == 'POST':
+        form = EventoForm(request.POST, instance=evento)
+        form_proyectado = PresupuestoForm(request.POST, prefix='proyectado', instance=presu_proyectado)
+        form_ejecutado = PresupuestoForm(request.POST, prefix='ejecutado', instance=presu_ejecutado)
+
+        if form.is_valid() and form_proyectado.is_valid() and form_ejecutado.is_valid():
+            form.save()
+
+            presu_p = form_proyectado.save(commit=False)
+            presu_p.evento = evento
+            presu_p.tipo = 'proyectado'
+            presu_p.save()
+
+            presu_e = form_ejecutado.save(commit=False)
+            presu_e.evento = evento
+            presu_e.tipo = 'ejecutado'
+            presu_e.save()
+
+            messages.success(request, 'Evento actualizado correctamente')
+            return redirect('detalle_evento', evento_id=evento.id)
+
+    else:
+        form = EventoForm(instance=evento)
+        form_proyectado = PresupuestoForm(prefix='proyectado', instance=presu_proyectado)
+        form_ejecutado = PresupuestoForm(prefix='ejecutado', instance=presu_ejecutado)
+
+    return render(request, 'registrar_eventos/editar_evento.html', {
+        'form': form,
+        'form_proyectado': form_proyectado,
+        'form_ejecutado': form_ejecutado,
+        'evento': evento, # Al existir, el template dirá "Editar"
+        'title': 'Editar evento'
+    })
+
 #crear participantes
 @login_required(login_url='login')
 def crear_participantes(request):
@@ -221,49 +263,7 @@ def gestionar_premiacion(request, evento_id):
         'title': f"Premiación - {evento.nombre_actividad}"
     })
 
-# ================================ EDITAR EVENTO ALL EN UNO ================================
-@login_required(login_url='login')
-def editar_evento(request, evento_id):
-    evento = get_object_or_404(Evento, id=evento_id)
-
-    presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
-    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
-
-    if request.method == 'POST':
-        form = EventoForm(request.POST, instance=evento)
-        form_proyectado = PresupuestoForm(request.POST, prefix='proyectado', instance=presu_proyectado)
-        form_ejecutado = PresupuestoForm(request.POST, prefix='ejecutado', instance=presu_ejecutado)
-
-        if form.is_valid() and form_proyectado.is_valid() and form_ejecutado.is_valid():
-            form.save()
-
-            presu_p = form_proyectado.save(commit=False)
-            presu_p.evento = evento
-            presu_p.tipo = 'proyectado'
-            presu_p.save()
-
-            presu_e = form_ejecutado.save(commit=False)
-            presu_e.evento = evento
-            presu_e.tipo = 'ejecutado'
-            presu_e.save()
-
-            messages.success(request, 'Evento actualizado correctamente')
-            return redirect('detalle_evento', evento_id=evento.id)
-
-    else:
-        form = EventoForm(instance=evento)
-        form_proyectado = PresupuestoForm(prefix='proyectado', instance=presu_proyectado)
-        form_ejecutado = PresupuestoForm(prefix='ejecutado', instance=presu_ejecutado)
-
-    return render(request, 'registrar_eventos/editar_evento.html', {
-        'form': form,
-        'form_proyectado': form_proyectado,
-        'form_ejecutado': form_ejecutado,
-        'evento': evento, # Al existir, el template dirá "Editar"
-        'title': 'Editar evento'
-    })
-
-# ================================ EDITAR PREMIACIÓN ================================
+# EDITAR PREMIACIÓN CLÁSICO (PÁGINA SEPARADA) (EN DESUSO, SE DEJA SOLO COMO REFERENCIA DE CÓMO HACERLO SIN AJAX)
 @login_required(login_url='login')
 def editar_premiacion(request, premio_id):
     premio = get_object_or_404(Premiacion, id=premio_id)
@@ -281,7 +281,7 @@ def editar_premiacion(request, premio_id):
         'title': 'Editar premio'
     })
 
-# =============================== EDITAR PREMIACIÓN AJAX ================================
+# EDITAR PREMIACIÓN AJAX (USADO EN EL MODAL, SE DEJA EL CLÁSICO SOLO COMO REFERENCIA DE CÓMO HACERLO SIN AJAX)
 @login_required(login_url='login')
 def editar_premio_ajax(request):
     try:

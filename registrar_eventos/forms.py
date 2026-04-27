@@ -157,7 +157,7 @@ class PresupuestoForm(forms.ModelForm):
 class PremiacionForm(forms.ModelForm):
     class Meta:
         model = Premiacion
-        exclude = ['evento']  # 👈 🔥 SOLUCIÓN CLAVE
+        exclude = ['evento']
         widgets = {
             'nombres': forms.TextInput(attrs={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
