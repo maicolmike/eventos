@@ -1,6 +1,6 @@
 {% load static %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %} <!-- SOLO USUARIOS AUTENTICADOS -->
 <link rel="stylesheet" href="{% static 'css/navbarHorizontal2.css' %}">
 <link rel="stylesheet" href="{% static 'css/acciones.css' %}">
 
@@ -18,87 +18,122 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarMain">
-
       <!-- MENÚ -->
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'crear_evento' %}"><i class="fas fa-calendar-plus text-warning"></i> Crear evento</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'listar_eventos' %}"><i class="fa-solid fa-table-list text-primary"></i> Listar eventos</a>
-        </li>
+       <ul class="navbar-nav mx-auto">
 
-        {% if user.is_superuser %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'crear_participantes' %}"><i class="fa-solid fa-person-circle-plus text-warning"></i> Crear participantes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'listar_participantes' %}"><i class="fa-solid fa-people-group text-primary"></i> Listar participantes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus text-warning"></i> Crear usuarios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'list_users' %}"><i class="fas fa-users text-primary"></i> Listar usuarios</a>
-        </li>
-        {% endif %}
-      </ul>
-
-      <!-- DERECHA -->
-      <ul class="navbar-nav ms-auto align-items-center">
-
-        <!-- 👤 PERFIL -->
+        <!-- EVENTOS -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-            
-            <!-- FOTO -->
-            {% if user.is_superuser %}
-            <img src="{% static 'img/administrador1.png' %}" class="rounded-circle me-2" width="35" height="35">
-            {% else %}
-            <img src="{% static 'img/cliente.png' %}" class="rounded-circle me-2" width="35" height="35">
-            {% endif %}
-            
-            {{ user.username }}
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-calendar-days text-warning"></i> Eventos
           </a>
-
-          <ul class="dropdown-menu dropdown-menu-end shadow">
-
-            <li class="text-center p-2">
-              <strong>{{ user.username }}</strong><br>
-              {% if user.is_superuser %}
-                <span class="badge bg-primary">Administrador</span>
-              {% else %}
-                <span class="badge bg-warning text-dark">Cliente</span>
-              {% endif %}
-            </li>
-
-            <li><hr class="dropdown-divider"></li>
-
+          <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="{% url 'perfil' %}">
-                <i class="fa-solid fa-pen-to-square text-primary me-2"></i>Mi perfil
+              <a class="dropdown-item" href="{% url 'crear_evento' %}">
+                <i class="fas fa-calendar-plus text-warning me-2"></i>Crear evento
               </a>
             </li>
-
             <li>
-              <a class="dropdown-item" href="{% url 'change_password' %}">
-                <i class="fa-solid fa-key text-warning me-2"></i>Cambiar contraseña
+              <a class="dropdown-item" href="{% url 'listar_eventos' %}">
+                <i class="fa-solid fa-table-list text-primary me-2"></i>Listar eventos
               </a>
             </li>
-
-            <li><hr class="dropdown-divider"></li>
-
-            <li>
-              <a class="dropdown-item text-danger" href="{% url 'logout' %}">
-                <i class="fa-solid fa-door-closed text-danger me-2"></i>Cerrar sesión
-              </a>
-            </li>
-
           </ul>
         </li>
 
-      </ul>
+        {% if user.is_superuser %} <!-- SOLO ADMINISTRADOR -->
 
+        <!-- PARTICIPANTES -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-people-group text-primary"></i> Participantes
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'crear_participantes' %}">
+                <i class="fa-solid fa-person-circle-plus text-warning me-2"></i>Crear participantes
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'listar_participantes' %}">
+                <i class="fa-solid fa-people-group text-primary me-2"></i>Listar participantes
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- USUARIOS -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fas fa-users text-primary"></i> Usuarios
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'register' %}">
+                <i class="fas fa-user-plus text-warning me-2"></i>Crear usuario
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'list_users' %}">
+                <i class="fas fa-users text-primary me-2"></i>Listar usuarios
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        {% endif %}
+
+    </ul>
+
+    <!-- DERECHA -->
+     <ul class="navbar-nav ms-auto align-items-center">
+      <!-- 👤 PERFIL -->
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+          <!-- FOTO -->
+           {% if user.is_superuser %}
+           <img src="{% static 'img/administrador1.png' %}" class="rounded-circle me-2" width="35" height="35">
+           {% else %}
+           <img src="{% static 'img/cliente.png' %}" class="rounded-circle me-2" width="35" height="35">
+           {% endif %}
+           {{ user.username }}
+        </a>
+        
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <li class="text-center p-2">
+            <strong>{{ user.username }}</strong><br>
+            {% if user.is_superuser %}
+            <span class="badge bg-primary">Administrador</span>
+            {% else %}
+            <span class="badge bg-warning text-dark">Cliente</span>
+            {% endif %}
+          </li>
+          
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <a class="dropdown-item" href="{% url 'perfil' %}">
+              <i class="fa-solid fa-pen-to-square text-primary me-2"></i>Mi perfil
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="{% url 'change_password' %}">
+              <i class="fa-solid fa-key text-warning me-2"></i>Cambiar contraseña
+            </a>
+          </li>
+
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+              <i class="fa-solid fa-door-closed text-danger me-2"></i>Cerrar sesión
+            </a>
+          </li>
+        </ul>
+
+      </li>
+
+      </ul>
     </div>
   </div>
 </nav>
