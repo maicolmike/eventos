@@ -1,5 +1,6 @@
 {% extends 'inicio/base.html' %}
 {% load static %}
+{% load humanize %} <!-- Activar la librería de filtros en tu template: en settings.py ve a la parte de INSTALLED_APPS agrega 'django.contrib.humanize' colocar LANGUAGE_CODE = 'es-co'-->
 
 {% block content %}
 
@@ -132,7 +133,7 @@
                                     <td>{{ p.nombres }} {{ p.apellidos }}</td>
                                     <td>{{ p.identificacion }}</td>
                                     <td>{{ p.agencia }}</td>
-                                    <td><strong>${{ p.valor_premio }}</strong></td>
+                                    <td><strong>${{ p.valor_premio | intcomma }}</strong></td>
                                     <td>
                                         <!-- boten editar -->
                                         <!-- 

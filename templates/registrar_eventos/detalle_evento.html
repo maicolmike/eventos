@@ -1,7 +1,7 @@
 {% extends 'inicio/base.html' %}
 {% load static %}
 
-{% load humanize %}
+{% load humanize %} <!-- Activar la librería de filtros en tu template: en settings.py ve a la parte de INSTALLED_APPS agrega 'django.contrib.humanize' colocar LANGUAGE_CODE = 'es-co'-->
 
 {% block content %}
 
@@ -139,17 +139,17 @@
 
                     {% if presu_p %}
                         <ul class="list-group">
-                            <li class="list-group-item">Refrigerio: ${{ presu_p.refrigerio }}</li>
-                            <li class="list-group-item">Almuerzo: ${{ presu_p.almuerzo }}</li>
-                            <li class="list-group-item">Publicidad: ${{ presu_p.publicidad }}</li>
-                            <li class="list-group-item">Sonido: ${{ presu_p.sonido }}</li>
-                            <li class="list-group-item">Video: ${{ presu_p.video }}</li>
-                            <li class="list-group-item">Premiación: ${{ presu_p.premiacion }}</li>
-                            <li class="list-group-item">Imprevistos: ${{ presu_p.imprevistos }}</li>
-                            <li class="list-group-item">Otros: ${{ presu_p.otros }}</li>
+                            <li class="list-group-item">Refrigerio: ${{ presu_p.refrigerio | intcomma }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_p.almuerzo | intcomma }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_p.publicidad | intcomma }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_p.sonido | intcomma }}</li>
+                            <li class="list-group-item">Video: ${{ presu_p.video | intcomma }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_p.premiacion | intcomma }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_p.imprevistos | intcomma }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_p.otros | intcomma }}</li>
 
                             <li class="list-group-item bg-light">
-                                <strong>Total: ${{ presu_p.total_presupuesto }}</strong>
+                                <strong>Total: ${{ presu_p.total_presupuesto | intcomma }}</strong>
                             </li>
                         </ul>
                     {% else %}
@@ -163,17 +163,17 @@
 
                     {% if presu_e %}
                         <ul class="list-group">
-                            <li class="list-group-item">Refrigerio: ${{ presu_e.refrigerio }}</li>
-                            <li class="list-group-item">Almuerzo: ${{ presu_e.almuerzo }}</li>
-                            <li class="list-group-item">Publicidad: ${{ presu_e.publicidad }}</li>
-                            <li class="list-group-item">Sonido: ${{ presu_e.sonido }}</li>
-                            <li class="list-group-item">Video: ${{ presu_e.video }}</li>
-                            <li class="list-group-item">Premiación: ${{ presu_e.premiacion }}</li>
-                            <li class="list-group-item">Imprevistos: ${{ presu_e.imprevistos }}</li>
-                            <li class="list-group-item">Otros: ${{ presu_e.otros }}</li>
+                            <li class="list-group-item">Refrigerio: ${{ presu_e.refrigerio | intcomma }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_e.almuerzo | intcomma }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_e.publicidad | intcomma }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_e.sonido | intcomma }}</li>
+                            <li class="list-group-item">Video: ${{ presu_e.video | intcomma }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_e.premiacion | intcomma }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_e.imprevistos | intcomma }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_e.otros | intcomma }}</li>
 
                             <li class="list-group-item bg-light">
-                                <strong>Total: ${{ presu_e.total_presupuesto }}</strong>
+                                <strong>Total: ${{ presu_e.total_presupuesto | intcomma }}</strong>
                             </li>
                         </ul>
                     {% else %}
@@ -226,7 +226,7 @@
                                     <td>{{ p.nombres }} {{ p.apellidos }}</td>
                                     <td>{{ p.identificacion }}</td>
                                     <td>{{ p.agencia }}</td>
-                                    <td><strong>${{ p.valor_premio }}</strong></td>
+                                    <td><strong>${{ p.valor_premio | intcomma }}</strong></td>
                                     <td>
                                         <!-- boten editar -->
                                         <!-- 
