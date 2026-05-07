@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'registrar_eventos',
+    'django.contrib.humanize', # para formatear números grandes con comas en las plantillas
 ]
 AUTH_USER_MODEL = 'users.User' #con esto ya no utilizamos el user del sistema sino el nuestro
 
@@ -124,6 +125,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)

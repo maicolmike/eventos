@@ -10,7 +10,9 @@ from django.http import JsonResponse
 # Para exportar a Excel
 from django.http import HttpResponse
 from openpyxl import Workbook
-from openpyxl.styles import Font
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.utils import get_column_letter
+
 
 #crear evento
 @login_required(login_url='login')
@@ -409,6 +411,28 @@ def exportar_eventos_excel(request):
         'ASOCIADOS',
         'ACOMPAÑANTES',
         'DESCRIPCIÓN DE LA EJECUCIÓN',
+
+         # PRESUPUESTO PROYECTADO
+        'PROYECTADO VALOR REFRIGERIO',
+        'PROYECTADO VALOR ALMUERZO',
+        'PROYECTADO VALOR PUBLICIDAD',
+        'PROYECTADO VALOR SONIDO',
+        'PROYECTADO VALOR VIDEO',
+        'PROYECTADO VALOR PREMIACIÓN',
+        'PROYECTADO VALOR IMPREVISTOS',
+        'PROYECTADO VALOR OTROS',
+        'PROYECTADO TOTAL',
+
+        # PRESUPUESTO EJECUTADO
+        'EJECUTADO VALOR REFRIGERIO',
+        'EJECUTADO VALOR ALMUERZO',
+        'EJECUTADO VALOR PUBLICIDAD',
+        'EJECUTADO VALOR SONIDO',
+        'EJECUTADO VALOR VIDEO',
+        'EJECUTADO VALOR PREMIACIÓN',
+        'EJECUTADO VALOR IMPREVISTOS',
+        'EJECUTADO VALOR OTROS',
+        'EJECUTADO TOTAL',
     ]
 
     # escribir encabezados
@@ -421,6 +445,9 @@ def exportar_eventos_excel(request):
     for cell in ws[1]:
         cell.font = Font(bold=True)
 
+        # altura fila encabezados
+        ws.row_dimensions[1].height = 40
+
     # ============================================
     # 4. CONSULTAR EVENTOS
     # ============================================
@@ -432,6 +459,12 @@ def exportar_eventos_excel(request):
     # ============================================
 
     for evento in eventos:
+        # ============================================
+        # PRESUPUESTOS DEL EVENTO
+        # ============================================
+
+        presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
+        presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
 
         fila = [
             evento.id,
@@ -448,39 +481,65 @@ def exportar_eventos_excel(request):
             evento.asociados_participantes,
             evento.acompanantes_participantes,
             evento.descripcion_ejecucion,
-            
+
+            # Presupuesto proyectado
+            presu_proyectado.refrigerio if presu_proyectado else 0,
+            presu_proyectado.almuerzo if presu_proyectado else 0,
+            presu_proyectado.publicidad if presu_proyectado else 0,
+            presu_proyectado.sonido if presu_proyectado else 0,
+            presu_proyectado.video if presu_proyectado else 0,
+            presu_proyectado.premiacion if presu_proyectado else 0,
+            presu_proyectado.imprevistos if presu_proyectado else 0,
+            presu_proyectado.otros if presu_proyectado else 0,
+            presu_proyectado.total_presupuesto if presu_proyectado else 0,
+
+            # Presupuesto ejecutado
+            presu_ejecutado.refrigerio if presu_ejecutado else 0,
+            presu_ejecutado.almuerzo if presu_ejecutado else 0,
+            presu_ejecutado.publicidad if presu_ejecutado else 0,
+            presu_ejecutado.sonido if presu_ejecutado else 0,
+            presu_ejecutado.video if presu_ejecutado else 0,
+            presu_ejecutado.premiacion if presu_ejecutado else 0,
+            presu_ejecutado.imprevistos if presu_ejecutado else 0,
+            presu_ejecutado.otros if presu_ejecutado else 0,
+            presu_ejecutado.total_presupuesto if presu_ejecutado else 0,    
         ]
 
         ws.append(fila)
+        # dar formato numérico
+        for cell in ws[ws.max_row]:
+
+            if isinstance(cell.value, int):
+                cell.number_format = '#,##0'
 
     # ============================================
-    # 6. AJUSTAR ANCHO COLUMNAS
+    # 6. AJUSTAR ANCHO AUTOMÁTICO COLUMNAS
     # ============================================
 
-    columnas = [
-    'A','B','C','D','E','F',
-    'G','H','I','J','K','L','M','N'
-    ]
-    
-    tamaños = [
-    8,   # ID
-    18,  # AGENCIA
-    18,  # FECHA INFORME
-    18,  # FECHA ACTIVIDAD
-    25,  # LUGAR
-    25,  # TIPO ACTIVIDAD
-    35,  # NOMBRE ACTIVIDAD
-    25,  # FACILITADOR
-    25,  # ENTIDAD ALIADA
-    25,  # PROGRAMA
-    12,  # CUPO
-    12,  # ASOCIADOS
-    15,  # ACOMPAÑANTES
-    50   # DESCRIPCION
-    ]
+    for column_cells in ws.columns:
 
-    for col, tamaño in zip(columnas, tamaños):
-        ws.column_dimensions[col].width = tamaño
+        longitud_maxima = 0
+
+        letra_columna = get_column_letter(
+            column_cells[0].column
+        )
+
+        for cell in column_cells:
+
+            try:
+                if len(str(cell.value)) > longitud_maxima:
+                    longitud_maxima = len(str(cell.value))
+            except:
+                pass
+
+        # ancho dinámico
+        ancho = longitud_maxima + 5
+
+        # limitar ancho máximo
+        if ancho > 50:
+            ancho = 50
+
+        ws.column_dimensions[letra_columna].width = ancho
 
     # ============================================
     # 7. CREAR RESPUESTA HTTP
