@@ -5,359 +5,251 @@
 
 <div class="container-fluid">
 
-    <!-- ================================================= -->
-    <!-- INFORMACIÓN GENERAL -->
-    <!-- ================================================= -->
+    <div class="row">
+        <div class="col-lg-4">
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Información General</h5>
+                </div>
+                <div class="card-body p-0"> <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Agencia:</strong> {{ evento.agencia }}</li>
+                        <li class="list-group-item"><strong>Fecha informe:</strong> {{ evento.fecha_informe|date:"d F, Y" }}</li>
+                        <li class="list-group-item"><strong>Fecha actividad:</strong> {{ evento.fecha_actividad|date:"d F, Y" }}</li>
+                        <li class="list-group-item"><strong>Lugar:</strong> {{ evento.lugar_actividad }}</li>
+                        <li class="list-group-item"><strong>Tipo:</strong> {{ evento.tipo_actividad }}</li>
+                    </ul>
+                </div>
+            </div>
 
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Estadísticas de Cupo</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="row">
+                        <div class="col-4">
+                            <h3 class="mb-0 text-primary">{{ evento.cupo_participantes }}</h3>
+                            <small class="text-muted">Total</small>
+                        </div>
+                        <div class="col-4 border-start border-end">
+                            <h3 class="mb-0 text-success">{{ evento.asociados_participantes }}</h3>
+                            <small class="text-muted">Asociados</small>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="mb-0 text-info">{{ evento.acompanantes_participantes }}</h3>
+                            <small class="text-muted">Acompañantes</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Nombre de la actividad</h5>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title text-dark">{{ evento.nombre_actividad }}</h4>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Facilitador:</strong> {{ evento.facilitador }}</p>
+                            <p class="mb-1"><strong>Entidad Aliada:</strong> {{ evento.entidad_aliada }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Programa:</strong> {{ evento.programa_desarrollo }}</p>
+                        </div>
+                    </div>
+                    <p class="fw-bold mb-1">Descripción de la ejecución:</p>
+                    <p class="text-muted bg-light p-3 rounded" style="white-space: pre-wrap;">{{ evento.descripcion_ejecucion }}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0"><i class="fas fa-users"></i> Colaboradores ({{ evento.colaboradores.count }})</h6>
+                        </div>
+                        <div class="card-body overflow-auto" style="max-height: 300px;">
+                            <ul class="list-group list-group-flush small">
+                                {% for c in evento.colaboradores.all %}
+                                    <li class="list-group-item border-0 ps-0"><i class="fas fa-check-circle text-success me-2"></i>{{ c.nombres }} {{ c.apellidos }}</li>
+                                {% empty %}
+                                    <li class="list-group-item text-muted italic">Sin colaboradores asignados</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-header bg-danger text-white">
+                            <h6 class="mb-0"><i class="fas fa-user-tie"></i> Directivos ({{ evento.directivos.count }})</h6>
+                        </div>
+                        <div class="card-body overflow-auto" style="max-height: 300px;">
+                            <ul class="list-group list-group-flush small">
+                                {% for d in evento.directivos.all %}
+                                    <li class="list-group-item border-0 ps-0"><i class="fas fa-star text-danger me-2"></i>{{ d.nombres }} {{ d.apellidos }}</li>
+                                {% empty %}
+                                    <li class="list-group-item text-muted italic">Sin directivos asignados</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div>
+
+    <!-- 💰 PRESUPUESTO -->
     <div class="card shadow-sm border-0 mb-4">
-
         <div class="card-header bg-primary text-white">
-
-            <h5 class="mb-0">
-                Información General
-            </h5>
-
+            <h5 class="mb-0">Presupuesto</h5>
         </div>
 
         <div class="card-body">
 
             <div class="row">
 
+                <!-- 🔹 PRESUPUESTO PROYECTADO -->
                 <div class="col-md-6">
-
-                    <p>
-                        <strong>Agencia:</strong>
-                        {{ evento.agencia }}
-                    </p>
-
-                    <p>
-                        <strong>Fecha informe:</strong>
-                        {{ evento.fecha_informe|date:"d/m/Y" }}
-                    </p>
-
-                    <p>
-                        <strong>Fecha actividad:</strong>
-                        {{ evento.fecha_actividad|date:"d/m/Y" }}
-                    </p>
-
-                </div>
-
-                <div class="col-md-6">
-
-                    <p>
-                        <strong>Tipo actividad:</strong>
-                        {{ evento.tipo_actividad }}
-                    </p>
-
-                    <p>
-                        <strong>Lugar:</strong>
-                        {{ evento.lugar_actividad }}
-                    </p>
-
-                </div>
-
-            </div>
-
-            <hr>
-
-            <h5>
-                {{ evento.nombre_actividad }}
-            </h5>
-
-            <p class="text-muted">
-                {{ evento.descripcion_ejecucion }}
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- ================================================= -->
-    <!-- PARTICIPANTES -->
-    <!-- ================================================= -->
-
-    <div class="row">
-
-        <!-- colaboradores -->
-        <div class="col-md-6">
-
-            <div class="card border-0 shadow-sm mb-4">
-
-                <div class="card-header bg-success text-white">
-
-                    Colaboradores
-                    ({{ evento.colaboradores.count }})
-
-                </div>
-
-                <div class="card-body">
-
-                    <ul class="list-group">
-
-                        {% for c in evento.colaboradores.all %}
-
-                            <li class="list-group-item">
-
-                                {{ c.nombres }}
-                                {{ c.apellidos }}
-
-                            </li>
-
-                        {% empty %}
-
-                            <li class="list-group-item text-muted">
-                                Sin colaboradores
-                            </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- directivos -->
-        <div class="col-md-6">
-
-            <div class="card border-0 shadow-sm mb-4">
-
-                <div class="card-header bg-danger text-white">
-
-                    Directivos
-                    ({{ evento.directivos.count }})
-
-                </div>
-
-                <div class="card-body">
-
-                    <ul class="list-group">
-
-                        {% for d in evento.directivos.all %}
-
-                            <li class="list-group-item">
-
-                                {{ d.nombres }}
-                                {{ d.apellidos }}
-
-                            </li>
-
-                        {% empty %}
-
-                            <li class="list-group-item text-muted">
-                                Sin directivos
-                            </li>
-
-                        {% endfor %}
-
-                    </ul>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ================================================= -->
-    <!-- PRESUPUESTOS -->
-    <!-- ================================================= -->
-
-    <div class="row">
-
-        <!-- proyectado -->
-        <div class="col-md-6">
-
-            <div class="card border-0 shadow-sm mb-4">
-
-                <div class="card-header bg-success text-white">
-
-                    Presupuesto proyectado
-
-                </div>
-
-                <div class="card-body">
+                    <h6 class="text-success">Proyectado</h6>
 
                     {% if presu_p %}
-
                         <ul class="list-group">
+                            <li class="list-group-item">Refrigerio: ${{ presu_p.refrigerio }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_p.almuerzo }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_p.publicidad }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_p.sonido }}</li>
+                            <li class="list-group-item">Video: ${{ presu_p.video }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_p.premiacion }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_p.imprevistos }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_p.otros }}</li>
 
-                            <li class="list-group-item">
-                                Refrigerio:
-                                ${{ presu_p.refrigerio }}
+                            <li class="list-group-item bg-light">
+                                <strong>Total: ${{ presu_p.total_presupuesto }}</strong>
                             </li>
-
-                            <li class="list-group-item">
-                                Almuerzo:
-                                ${{ presu_p.almuerzo }}
-                            </li>
-
-                            <li class="list-group-item">
-                                Publicidad:
-                                ${{ presu_p.publicidad }}
-                            </li>
-
-                            <li class="list-group-item">
-
-                                <strong>
-                                    Total:
-                                    ${{ presu_p.total_presupuesto }}
-                                </strong>
-
-                            </li>
-
                         </ul>
-
+                    {% else %}
+                        <p class="text-muted">No hay presupuesto proyectado</p>
                     {% endif %}
-
                 </div>
 
-            </div>
-
-        </div>
-
-        <!-- ejecutado -->
-        <div class="col-md-6">
-
-            <div class="card border-0 shadow-sm mb-4">
-
-                <div class="card-header bg-danger text-white">
-
-                    Presupuesto ejecutado
-
-                </div>
-
-                <div class="card-body">
+                <!-- 🔹 PRESUPUESTO EJECUTADO -->
+                <div class="col-md-6">
+                    <h6 class="text-danger">Ejecutado</h6>
 
                     {% if presu_e %}
-
                         <ul class="list-group">
+                            <li class="list-group-item">Refrigerio: ${{ presu_e.refrigerio }}</li>
+                            <li class="list-group-item">Almuerzo: ${{ presu_e.almuerzo }}</li>
+                            <li class="list-group-item">Publicidad: ${{ presu_e.publicidad }}</li>
+                            <li class="list-group-item">Sonido: ${{ presu_e.sonido }}</li>
+                            <li class="list-group-item">Video: ${{ presu_e.video }}</li>
+                            <li class="list-group-item">Premiación: ${{ presu_e.premiacion }}</li>
+                            <li class="list-group-item">Imprevistos: ${{ presu_e.imprevistos }}</li>
+                            <li class="list-group-item">Otros: ${{ presu_e.otros }}</li>
 
-                            <li class="list-group-item">
-                                Refrigerio:
-                                ${{ presu_e.refrigerio }}
+                            <li class="list-group-item bg-light">
+                                <strong>Total: ${{ presu_e.total_presupuesto }}</strong>
                             </li>
-
-                            <li class="list-group-item">
-                                Almuerzo:
-                                ${{ presu_e.almuerzo }}
-                            </li>
-
-                            <li class="list-group-item">
-                                Publicidad:
-                                ${{ presu_e.publicidad }}
-                            </li>
-
-                            <li class="list-group-item">
-
-                                <strong>
-                                    Total:
-                                    ${{ presu_e.total_presupuesto }}
-                                </strong>
-
-                            </li>
-
                         </ul>
-
+                    {% else %}
+                        <p class="text-muted">No hay presupuesto ejecutado</p>
                     {% endif %}
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
-
-    <!-- ================================================= -->
-    <!-- PREMIACIONES -->
-    <!-- ================================================= -->
-
-    <div class="card border-0 shadow-sm mb-4">
-
-        <div class="card-header bg-warning">
-
-            <strong>
-                Premiaciones
-            </strong>
-
+    <!-- fin presupuesto-->
+    
+    <!-- 🏆 PREMIACIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between">
+            <h5 class="mb-0">Premiaciones</h5>
         </div>
 
         <div class="card-body">
 
             {% for categoria, premios in categorias.items %}
-
-                <h5 class="mt-3 text-capitalize">
-                    {{ categoria }}
-                </h5>
+                
+                <h6 class="mt-3 text-capitalize">
+                    {{ categoria }} ({{ premios|length }})
+                </h6>
 
                 {% if premios %}
-
                     <div class="table-responsive">
-
-                        <table class="table table-bordered">
-
+                        <table class="table table-bordered table-sm">
                             <thead class="table-dark">
-
                                 <tr>
-
                                     <th>Puesto</th>
                                     <th>Nombre</th>
+                                    <th>Identificación</th>
                                     <th>Agencia</th>
                                     <th>Valor</th>
-
+                                    <th>Acciones</th>
                                 </tr>
-
                             </thead>
 
                             <tbody>
-
                                 {% for p in premios %}
-
                                 <tr>
-
+                                    <td>{{ p.puesto_numero }}</td>
+                                    <td>{{ p.nombres }} {{ p.apellidos }}</td>
+                                    <td>{{ p.identificacion }}</td>
+                                    <td>{{ p.agencia }}</td>
+                                    <td><strong>${{ p.valor_premio }}</strong></td>
                                     <td>
-                                        {{ p.puesto_numero }}
-                                    </td>
+                                        <!-- boten editar -->
+                                        <!-- 
+                                        <a href="{% url 'editar_premiacion' p.id %}" class="btn btn-sm btn-warning text-dark btn-outline-primary hover-white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        -->
+                                        <a href="#" class="btn btn-sm btn-warning text-dark btn-editar-premio btn-outline-primary hover-white"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarPremio"
+                                        data-id="{{ p.id }}"
+                                        data-nombres="{{ p.nombres }}"
+                                        data-apellidos="{{ p.apellidos }}"
+                                        data-identificacion="{{ p.identificacion }}"
+                                        data-agencia="{{ p.agencia }}"
+                                        data-categoria="{{ p.categoria }}"
+                                        data-puesto_numero="{{ p.puesto_numero }}"
+                                        data-valor_premio="{{ p.valor_premio|floatformat:0 }}">
+                                        <i class="fas fa-edit"></i>
+                                        </a>
 
-                                    <td>
-                                        {{ p.nombres }}
-                                        {{ p.apellidos }}
+                                        <!-- boten eliminar -->
+                                        <a href="#" class="btn btn-sm btn-danger text-white btn-outline-primary hover-white btn-eliminar"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#modalEliminarPremio"
+                                        data-id="{{ p.id }}" 
+                                        data-nombres="{{ p.nombres }}"
+                                        data-apellidos="{{ p.apellidos }}">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                        </a>
                                     </td>
-
-                                    <td>
-                                        {{ p.agencia }}
-                                    </td>
-
-                                    <td>
-                                        ${{ p.valor_premio }}
-                                    </td>
-
                                 </tr>
-
                                 {% endfor %}
-
                             </tbody>
-
                         </table>
-
                     </div>
-
                 {% else %}
-
-                    <p class="text-muted">
-                        Sin premios
-                    </p>
-
+                    <p class="text-muted">Sin premios en esta categoría</p>
                 {% endif %}
 
             {% endfor %}
 
         </div>
-
     </div>
+    <!-- fin premiaciones-->
 
+   
 </div>
