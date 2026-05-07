@@ -80,6 +80,26 @@
           </ul>
         </li>
 
+        <!-- USUARIOS -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-file-excel text-success"></i> Archivo plano
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'exportar_eventos_excel' %}">
+                 <i class="fa-solid fa-file-excel text-success me-2"></i>Exportar eventos
+              </a>
+            </li>
+        
+            <li>
+              <a class="dropdown-item" href="{% url 'list_users' %}">
+                <i class="fas fa-users text-primary me-2"></i>Listar usuarios
+              </a>
+            </li>
+          </ul>
+        </li>
+
         {% endif %}
 
     </ul>

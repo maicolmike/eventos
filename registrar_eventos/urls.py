@@ -15,4 +15,5 @@ urlpatterns = [
     path('premio/editar/<int:premio_id>/', views.editar_premiacion, name='editar_premiacion'),
     path('editar_premio_ajax/', views.editar_premio_ajax, name='editar_premio_ajax'),
     path('delete_premio_ajax/', views.delete_premio_ajax, name='delete_premio_ajax'),
+    path('exportar_eventos_excel/',views.exportar_eventos_excel,name='exportar_eventos_excel'),
 ]

@@ -7,6 +7,10 @@ from .forms import EventoForm,ParticipanteForm,PresupuestoForm,PremiacionForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+# Para exportar a Excel
+from django.http import HttpResponse
+from openpyxl import Workbook
+from openpyxl.styles import Font
 
 #crear evento
 @login_required(login_url='login')
@@ -362,8 +366,139 @@ def delete_premio_ajax(request):
         })
 
     except Exception as e:
-        print("🔥 ERROR ELIMINAR:", e)
+        print(" ERROR ELIMINAR:", e)
         return JsonResponse({
             'status': 'error',
             'message': str(e)
         })
+
+# ============================================
+# EXPORTAR EVENTOS A EXCEL
+# ============================================
+
+@login_required(login_url='login')
+def exportar_eventos_excel(request):
+
+    # ============================================
+    # 1. CREAR LIBRO DE EXCEL
+    # ============================================
+    wb = Workbook()
+
+    # hoja activa
+    ws = wb.active
+
+    # nombre hoja
+    ws.title = "Eventos"
+
+    # ============================================
+    # 2. ENCABEZADOS
+    # ============================================
+
+    encabezados = [
+        'ID',
+        'AGENCIA',
+        'FECHA INFORME',
+        'FECHA ACTIVIDAD',
+        'LUGAR',
+        'TIPO ACTIVIDAD',
+        'NOMBRE ACTIVIDAD',
+        'FACILITADOR',
+        'ENTIDAD ALIADA',
+        'PROGRAMA',
+        'CUPO',
+        'ASOCIADOS',
+        'ACOMPAÑANTES',
+        'DESCRIPCIÓN DE LA EJECUCIÓN',
+    ]
+
+    # escribir encabezados
+    ws.append(encabezados)
+
+    # ============================================
+    # 3. PONER ENCABEZADOS EN NEGRILLA
+    # ============================================
+
+    for cell in ws[1]:
+        cell.font = Font(bold=True)
+
+    # ============================================
+    # 4. CONSULTAR EVENTOS
+    # ============================================
+
+    eventos = Evento.objects.all().order_by('id')
+
+    # ============================================
+    # 5. RECORRER EVENTOS
+    # ============================================
+
+    for evento in eventos:
+
+        fila = [
+            evento.id,
+            evento.agencia,
+            evento.fecha_informe.strftime('%d/%m/%Y'),
+            evento.fecha_actividad.strftime('%d/%m/%Y'),
+            evento.lugar_actividad,
+            evento.tipo_actividad,
+            evento.nombre_actividad,
+            evento.facilitador,
+            evento.entidad_aliada,
+            evento.programa_desarrollo,
+            evento.cupo_participantes,
+            evento.asociados_participantes,
+            evento.acompanantes_participantes,
+            evento.descripcion_ejecucion,
+            
+        ]
+
+        ws.append(fila)
+
+    # ============================================
+    # 6. AJUSTAR ANCHO COLUMNAS
+    # ============================================
+
+    columnas = [
+    'A','B','C','D','E','F',
+    'G','H','I','J','K','L','M','N'
+    ]
+    
+    tamaños = [
+    8,   # ID
+    18,  # AGENCIA
+    18,  # FECHA INFORME
+    18,  # FECHA ACTIVIDAD
+    25,  # LUGAR
+    25,  # TIPO ACTIVIDAD
+    35,  # NOMBRE ACTIVIDAD
+    25,  # FACILITADOR
+    25,  # ENTIDAD ALIADA
+    25,  # PROGRAMA
+    12,  # CUPO
+    12,  # ASOCIADOS
+    15,  # ACOMPAÑANTES
+    50   # DESCRIPCION
+    ]
+
+    for col, tamaño in zip(columnas, tamaños):
+        ws.column_dimensions[col].width = tamaño
+
+    # ============================================
+    # 7. CREAR RESPUESTA HTTP
+    # ============================================
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    # nombre archivo
+    response['Content-Disposition'] = (
+        'attachment; filename="eventos.xlsx"'
+    )
+
+    # ============================================
+    # 8. GUARDAR EXCEL EN RESPUESTA
+    # ============================================
+
+    wb.save(response)
+
+    return response
