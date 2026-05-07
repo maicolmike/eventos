@@ -166,7 +166,7 @@
 
             {# Si estamos editando, mostramos botón cancelar que vuelve al detalle #}
             {% if evento %}
-                <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-outline-danger btn-lg px-5 shadow ms-2">
+                <a href="{% url 'detalle_evento' evento.id %}" class="btn btn-danger text-white btn-outline-primary btn-lg px-5 shadow ms-2">
                     Cancelar
                 </a>
             {% endif %}
