@@ -108,6 +108,40 @@ def detalle_evento(request, evento_id):
         'title': f"Detalle - {evento.nombre_actividad}"
     })
 
+# DETALLE EVENTO MODAL AJAX
+@login_required(login_url='login')
+def detalle_evento_modal(request, evento_id):
+
+    # buscamos el evento
+    evento = get_object_or_404(Evento, id=evento_id)
+
+    # presupuesto proyectado
+    presu_proyectado = evento.presupuestos.filter(tipo='proyectado').first()
+
+    # presupuesto ejecutado
+    presu_ejecutado = evento.presupuestos.filter(tipo='ejecutado').first()
+
+    # premiaciones
+    premiaciones = evento.premiaciones.all().order_by('categoria', 'puesto_numero')
+
+    # agrupamos categorías
+    categorias = {
+        'infantil': [],
+        'juvenil': [],
+        'libre': []
+    }
+
+    for p in premiaciones:
+        categorias[p.categoria].append(p)
+
+    # renderizamos SOLO el contenido del modal
+    return render(request, 'registrar_eventos/modal_detalle_evento.html', {
+        'evento': evento,
+        'presu_p': presu_proyectado,
+        'presu_e': presu_ejecutado,
+        'categorias': categorias,
+    })
+
 # EDITAR EVENTO ALL EN UNO
 @login_required(login_url='login')
 def editar_evento(request, evento_id):
